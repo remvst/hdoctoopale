@@ -73,7 +73,7 @@
     </xsl:template>
 
     <!-- Introduction <section> -->
-    <xsl:template match="h:section[@data-hdoc-type='introduction' or @data-hdoc-type='intro']">
+    <xsl:template match="h:section[@data-hdoc-type='introduction' or @data-hdoc-type='intro']|h:div[@data-hdoc-type='introduction' or @data-hdoc-type='intro']">
       <sp:intro>
         <op:res>
           <!-- Going straight to the content -->
@@ -113,8 +113,6 @@
         </op:expUc>
       </sp:courseUc>
     </xsl:template>
-
-    <!-- TODO add more section levels -->
 
     <!-- Basic <section> (nothing was specified) -->
     <xsl:template match="h:section">
@@ -189,6 +187,19 @@
                     </op:pb>
                   </sp:pb>
                 </xsl:if>
+
+                <!-- Intro for a division -->
+                <!-- TODO test on scenari -->
+                <xsl:if test="./h:header/h:div[@data-hdoc-type='intro'] or ./h:header/h:div[@data-hdoc-type='introduction']">
+                  <sp:intro>
+                    <op:res>
+                      <xsl:apply-templates select="./h:div/h:p" />
+                    </op:res>
+                  </sp:intro>
+                </xsl:if>
+
+                <!-- TODO conlusion for a division -->
+
               </op:expUc>
             </sp:courseUc>
           </xsl:if>
