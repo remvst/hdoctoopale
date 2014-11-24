@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="hdoc_to_opale" basedir="." default="convert">
+	<!-- This properties are for debugging purposes only.
+	<property name="InputPath" value="sample02.hdoc"/>
+	<property name="OutputPath"	value="sample02.scar"/>
+	-->
+	
+	<target name="convert">
+		<!-- This is the main target : it is called whether by the project (as the default target) or by the user/converter
+		website, if specified in the command line. Basically, this target consists in several targets/ant buildfiles calls. -->
+		<antcall target="CleanDirectory"/>
+		<antcall target="UnzipHdocFile"/>
+		<antcall target="FindContentFiles"/>
+		<ant antfile="generateContentPath.xml"/>
+		<antcall target="ZipScar"/>
+		<!--<antcall target="CleanDirectory"/>-->
+    </target>
+	
+	<target name="CleanDirectory">
+		<!-- First and last target, which erases every intermediate files/folders created during the conversion process.--> 
+		<delete dir="decompressedHdoc"/>
+		<delete dir="decompressedOpale"/>
+		<delete file="generateContentPath.xml"/>
+		<delete file="moveRessourceFiles.xml"/>
+	</target>
+	
+	<target name="UnzipHdocFile">
+		<!-- Unzip the input hdoc file. Decompressed folder is named "decompressedHdoc" : this name is the only one which
+		refers to the hdoc file furthermore in this project. -->
+		<unzip src="${InputPath}" dest="decompressedHdoc"/>
+		<chmod dir="decompressedHdoc" perm="777"/>
+	</target>
+	
+	<target name="FindContentFiles">
+		<!-- Finds the absolute path of container.xml and applies transformation0.xsl on it.-->
+		<first id="first">
+		    <fileset
+		    	dir="decompressedHdoc/META-INF"
+		    	includes="**/container.xml"
+		    />
+		</first>
+		<xslt
+			in="${toString:first}"
+			out="generateContentPath.xml"
+			style="transformation0.xsl"
+			processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
+		/>
+		<chmod file="generateContentPath.xml" perm="777"/>
+	</target>
+	
+	<target name="ZipScar">
+		<!-- The penultimate target, which zips the converted file into a new folder (decompressedOpale). -->
+		<mkdir dir="decompressedOpale"/>
+		<chmod dir="decompressedOpale" perm="777"/>
+		<copy file=".wspmeta" todir="decompressedOpale"/>
+		<move file="outputFile.xml" todir="decompressedOpale"/>
+		<!-- Here you can call whether the task "MoveRessourceFiles or the moveRessourceFiles.xml file. Don't call them both ! -->
+		<!-- The following line must contain <ant antfile="moveRessourceFiles.xml"/> OR <antcall target="MoveRessourceFiles"/> -->
+		<ant antfile="moveRessourceFiles.xml"/>
+		<zip basedir="decompressedOpale" destfile="${OutputPath}" encoding="UTF-8"/>
+		<chmod dir="${OutputPath}" perm="777"/>
+	</target>
+	
+	<target name="MoveRessourceFiles">
+		<!-- Move ressource files : a subtarget of ZipScar. This target in no longer necessary (cf. ZipScar) but i chose to leave
+		anyway : it's a bit rougher than calling moveRessourceFiles.xml but it can still be useful if you encounter issues with
+		moveRessourceFiles.xml. -->
+		<move todir="decompressedOpale/">
+			<fileset dir="decompressedHdoc">
+				<exclude name="mimetype"/>
+				<exclude name="content.xml"/>
+			</fileset>
+			<dirset dir="decompressedHdoc">
+				<exclude name="META-INF"/>
+			</dirset>
+		</move>
+	</target>
+</project>
