@@ -99,7 +99,7 @@
       <sp:courseUc>
         <op:expUc>
           <op:uM>
-            <sp:title>Content of "<xsl:value-of select="./h:header/h:h1"/>"</sp:title>
+            <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
           </op:uM>
 
           <!-- In a grain, there can only be direct content (no division within it) -->
@@ -195,7 +195,7 @@
           <sp:courseUc>
             <op:expUc>
               <op:uM>
-                <sp:title>Content of "<xsl:value-of select="./h:header/h:h1"/>"</sp:title>
+                <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
               </op:uM>
               <xsl:if test="./h:div">
                 <sp:pb>
