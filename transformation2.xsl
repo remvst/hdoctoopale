@@ -206,8 +206,6 @@
             </sp:courseUc>
           </xsl:if>
 
-          <!-- TODO conlusion for a division -->
-
           <sp:courseUc>
             <op:expUc>
               <op:uM>
@@ -223,6 +221,21 @@
             </op:expUc>
           </sp:courseUc>
           <xsl:apply-templates select="./h:section"/>
+
+
+          <!-- Conclusion for a division -->
+          <xsl:if test="./h:footer/h:p">
+            <sp:conclu>
+              <op:res>
+                <sp:txt>
+                  <op:txt>
+                    <xsl:apply-templates select="./h:footer/h:p" />
+                  </op:txt>
+                </sp:txt>
+              </op:res>
+            </sp:conclu>
+          </xsl:if>
+
         </op:ueDiv>
       </sp:div>
     </xsl:template>
