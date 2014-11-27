@@ -120,6 +120,7 @@
       <!-- For now there are no specific processes applied on sections with an "introduction" or "conclusion" value in their data-hdoc-type attribute.
       They are processed the same as standard sections.
       -->
+
       <sp:div>
         <op:ueDiv>
           <op:ueDivM>
@@ -187,22 +188,27 @@
                     </op:pb>
                   </sp:pb>
                 </xsl:if>
-
-                <!-- Intro for a division -->
-                <!-- TODO test on scenari -->
-                <xsl:if test="./h:header/h:div[@data-hdoc-type='intro'] or ./h:header/h:div[@data-hdoc-type='introduction']">
-                  <sp:intro>
-                    <op:res>
-                      <xsl:apply-templates select="./h:div/h:p" />
-                    </op:res>
-                  </sp:intro>
-                </xsl:if>
-
-                <!-- TODO conlusion for a division -->
-
               </op:expUc>
             </sp:courseUc>
           </xsl:if>
+
+
+          <!-- Intro for a division -->
+          <!-- TODO test on scenari -->
+          <xsl:if test="./h:header/h:p">
+            <sp:intro>
+              <op:res>
+                <sp:txt>
+                  <op:txt>
+                    <xsl:apply-templates select="./h:header/h:p" />
+                  </op:txt>
+                </sp:txt>
+              </op:res>
+            </sp:intro>
+          </xsl:if>
+
+          <!-- TODO conlusion for a division -->
+
           <sp:courseUc>
             <op:expUc>
               <op:uM>
