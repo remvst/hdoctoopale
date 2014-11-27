@@ -95,7 +95,7 @@
     </xsl:template>
 
     <!-- Grains <sections> -->
-    <xsl:template match="h:section[@data-hdoc-type='grain'] or h:section[@data-hdoc-type='opale-expUc']">
+    <xsl:template match="h:section[@data-hdoc-type='grain' or @data-hdoc-type='opale-expUc']">
       <sp:courseUc>
         <op:expUc>
           <op:uM>
@@ -128,6 +128,20 @@
               <xsl:value-of select="./h:header/h:h1"/>
             </sp:title>
           </op:ueDivM>
+
+          <!-- Intro for a division -->
+          <xsl:if test="./h:header/h:p">
+            <sp:intro>
+              <op:res>
+                <sp:txt>
+                  <op:txt>
+                    <xsl:apply-templates select="./h:header/h:p" />
+                  </op:txt>
+                </sp:txt>
+              </op:res>
+            </sp:intro>
+          </xsl:if>
+
           <!-- Since Opale's "Division" doesn't support metadatas, I chose to create a new "Grain" child which only contains metadatas. -->
           <xsl:if test="./h:header/h:div or ./h:footer">
             <sp:courseUc>
@@ -190,21 +204,6 @@
                 </xsl:if>
               </op:expUc>
             </sp:courseUc>
-          </xsl:if>
-
-
-          <!-- Intro for a division -->
-          <!-- TODO test on scenari -->
-          <xsl:if test="./h:header/h:p">
-            <sp:intro>
-              <op:res>
-                <sp:txt>
-                  <op:txt>
-                    <xsl:apply-templates select="./h:header/h:p" />
-                  </op:txt>
-                </sp:txt>
-              </op:res>
-            </sp:intro>
           </xsl:if>
 
           <!-- TODO conlusion for a division -->
