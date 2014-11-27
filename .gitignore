@@ -1,0 +1,9 @@
+decompressedHdoc
+decompressedOpale
+schema
+.wspmeta
+*.scar
+*.zip
+*.hdoc
+Bachimont
+generateContentPath.xml

@@ -4,6 +4,11 @@
 	<property name="InputPath" value="sample02.hdoc"/>
 	<property name="OutputPath"	value="sample02.scar"/>
 	-->
+	<taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
+		<classpath>
+			<pathelement location="lib/jing.jar"/>
+		</classpath>
+	</taskdef>
 	
 	<target name="convert">
 		<!-- This is the main target : it is called whether by the project (as the default target) or by the user/converter
@@ -14,6 +19,7 @@
 		<ant antfile="generateContentPath.xml"/>
 		<antcall target="ZipScar"/>
 		<!--<antcall target="CleanDirectory"/>-->
+		<antcall target="validateOutput" />
     </target>
 	
 	<target name="CleanDirectory">
@@ -74,5 +80,12 @@
 				<exclude name="META-INF"/>
 			</dirset>
 		</move>
+	</target>
+
+	<!-- Validating the output XML -->
+	<!-- If the output can't be validated, it will still be output and might work on Opale -->
+	<target name="validateOutput">	
+		<echo>Validating output...</echo>
+		<jing file="decompressedOpale/outputFile.xml" rngfile="schema/op_ue.rng"></jing>		
 	</target>
 </project>
