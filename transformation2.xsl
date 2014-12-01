@@ -128,14 +128,10 @@
           </op:ueDivM>
 
           <!-- Intro for a division -->
-          <xsl:if test="./h:div[data-hdoc-type='introduction']">
+          <xsl:if test="./h:div[@data-hdoc-type='introduction']">
             <sp:intro>
               <op:res>
-                <sp:txt>
-                  <op:txt>
-                    <xsl:apply-templates select="./h:div[data-hdoc-type='introduction']/h:p" />
-                  </op:txt>
-                </sp:txt>
+                <xsl:apply-templates select="./h:div[@data-hdoc-type='introduction']/h:p" />
               </op:res>
             </sp:intro>
           </xsl:if>
@@ -209,26 +205,24 @@
               <op:uM>
                 <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
               </op:uM>
-              <xsl:if test="./h:div">
+              <!-- The not() could be simplified, but strangely it doesn't work. Feel free to fix. -->
+              <xsl:if test="./h:div[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]">
                 <sp:pb>
                   <op:pb>
-                    <xsl:apply-templates select="./h:div"/>
+                    <xsl:apply-templates select="./h:div[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]"/>
                   </op:pb>
                 </sp:pb>
               </xsl:if>
             </op:expUc>
           </sp:courseUc>
+
           <xsl:apply-templates select="./h:section"/>
 
           <!-- Conclusion for a division -->
-          <xsl:if test="./h:div[data-hdoc-type='conclusion']">
+          <xsl:if test="./h:div[@data-hdoc-type='conclusion']">
             <sp:conclu>
               <op:res>
-                <sp:txt>
-                  <op:txt>
-                    <xsl:apply-templates select="./h:div[data-hdoc-type='conclusion']/h:p" />
-                  </op:txt>
-                </sp:txt>
+                <xsl:apply-templates select="./h:div[@data-hdoc-type='conclusion']/h:p" />
               </op:res>
             </sp:conclu>
           </xsl:if>
@@ -324,7 +318,7 @@
   </xsl:template>
   
   <!-- Section related templates. -->
-    <xsl:template match="h:footer/h:div[@data-hdoc-type = 'tags']">
+  <xsl:template match="h:footer/h:div[@data-hdoc-type = 'tags']">
     <sp:keywd><xsl:value-of select="./h:span"/></sp:keywd>
   </xsl:template>
   
