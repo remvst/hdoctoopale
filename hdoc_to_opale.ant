@@ -22,8 +22,8 @@
 		<antcall target="FindContentFiles"/>
 		<ant antfile="generateContentPath.xml"/>
 		<antcall target="ZipScar"/>
-		<!--<antcall target="CleanDirectory"/>-->
 		<antcall target="validateOutput" />
+		<antcall target="CleanDirectory"/>
     </target>
 	
 	<target name="CleanDirectory">
