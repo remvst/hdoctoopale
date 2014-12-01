@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+    ns="http://www.utc.fr/ics/hdoc/xhtml">
+
+    <a:documentation>This schema describes the content file for hdoc format</a:documentation>
+    <a:documentation>This schema is a restriction of XHTML (it validates XHTML
+        schema, if namespace is changed to http://www.w3.org/1999/xhtml)</a:documentation>
+    
+    <a:documentation>Last update : 2014-11-03</a:documentation>
+    <a:documentation>Changes since last update : 
+        Correcting documentation
+        Correcting meta name="generator" content="HdocConverter/Optim1.2"
+    </a:documentation>
+    
+    <start>
+        <element name="html">
+            <ref name="Head"/>
+            <ref name="Body"/>
+        </element>
+    </start>
+
+    <define name="Head">
+        <element name="head">
+            <!-- mandatory : document title -->
+            <element name="title">
+                <text/>
+            </element>
+            <!-- mandatory : charset=utf-8 -->
+            <element name="meta">
+                <attribute name="charset">
+                    <value>utf-8</value>
+                </attribute>
+            </element>
+            <!-- optional : hdoc source generator -->
+            <optional>
+                <element name="meta">
+                    <attribute name="name">
+                        <value>generator</value>
+                    </attribute>
+                    <attribute name="content">
+                        <choice>                                                      
+                            <value>SimpleOptim</value>
+                            <value>HdocConverter/SimpleChain</value>                            
+                            <value>SimpleChain</value>              
+                            <value>HdocConverter/Etherpad</value>
+                            <value>HdocConverter/Opale3.4</value>
+                            <value>HdocConverter/Dokiel4.0</value>
+                            <value>HdocConverter/Optim1.2</value>                            
+                            <value>HdocConverter/Topaze1.3</value> 
+                            <value>HdocConverter/wikipedia</value>
+                            <value>HdocConverter/Wordpress</value>
+                            <value>HdocConverter/OpenDocumentText</value>
+                            <value>HdocConverter/LaTeX</value>
+                            <value>HdocConverter/OPML</value>
+                        </choice>
+                    </attribute>
+                </element>
+            </optional>
+            <!-- optional : metadata about content ; TODO : date...-->
+            <zeroOrMore>
+                <element name="meta">
+                    <attribute name="name">
+                        <choice>                            
+                            <value>description</value>
+                            <value>keywords</value>
+                            <value>author</value>
+                            <value>rights</value>
+                            <value>date</value>
+                        </choice>
+                    </attribute>
+                    <attribute name="content">
+                        <text/>
+                    </attribute>
+                </element>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="Body">
+        <element name="body">
+            <ref name="Structure"/>
+        </element>
+    </define>
+
+    <define name="Structure">
+        <oneOrMore>
+            <ref name="Section"/>
+        </oneOrMore>
+    </define>
+
+    <!-- Recursive and hierachical organization of the document -->
+    <define name="Section">
+        <element name="section">
+            <!-- optional typing -->
+            <ref name="SectionType"/>
+            <!-- mandatory : title (header > h1) -->
+            <element name="header">
+                <element name="h1">
+                    <text/>
+                </element>
+                <optional>
+                    <element name="div">
+                        <attribute name="data-hdoc-type">
+                            <value>author</value>
+                        </attribute>
+                        <text/>
+                    </element>
+                </optional>
+                <optional>
+                    <element name="div">
+                        <attribute name="data-hdoc-type">
+                            <value>date</value>
+                        </attribute>
+                        <data type="date"/>
+                    </element>
+                </optional>
+                <optional>
+                    <element name="div">
+                        <attribute name="data-hdoc-type">
+                            <value>rights</value>
+                        </attribute>
+                        <text/>
+                    </element>
+                </optional>
+            </element>
+            <!-- optional content of the section-->
+            <optional>
+                <ref name="Content"/>
+            </optional>
+            <!-- optional internal sub-structrure -->
+            <optional>
+                <ref name="Structure"/>
+            </optional>
+            <!-- optional footer -->
+            <optional>
+                <element name="footer">
+                    <optional>
+                        <element name="div">
+                            <attribute name="data-hdoc-type">
+                                <value>tags</value>
+                            </attribute>
+                            <oneOrMore>
+                                <element name="span">
+                                    <text/>
+                                </element>
+                            </oneOrMore>
+                        </element>
+                    </optional>
+                    <optional>
+                        <element name="div">
+                            <attribute name="data-hdoc-type">
+                                <value>categories</value>
+                            </attribute>
+                            <oneOrMore>
+                                <element name="span">
+                                    <text/>
+                                </element>
+                            </oneOrMore>
+                        </element>
+                    </optional>
+                </element>
+            </optional>
+        </element>
+    </define>
+
+    <!-- A content is a sequence of blocs -->
+    <define name="Content">
+        <oneOrMore>
+            <element name="div">
+                <!-- optional typing attribute -->
+                <ref name="DivType"/>
+                <!-- Optional title of a div -->
+                <optional>
+                    <element name="h6">
+                        <text/>
+                    </element>
+                </optional>
+                <ref name="Flow"/>
+            </element>
+        </oneOrMore>
+    </define>
+
+    <!-- A flow is a sequence of media : text, table, image, audio, video, others -->
+    <define name="Flow">
+        <oneOrMore>
+            <choice>
+                <ref name="Text"/>
+                <ref name="Table"/>
+                <ref name="Image"/>
+                <ref name="Audio"/>
+                <ref name="Video"/>
+                <ref name="Object"/>
+            </choice>
+        </oneOrMore>
+    </define>
+
+    <!-- Text -->
+    <define name="Text">
+        <oneOrMore>
+            <choice>
+                <ref name="P"/>
+                <ref name="L"/>
+            </choice>
+        </oneOrMore>
+    </define>
+
+    <!-- Paragraphe -->
+    <define name="P">
+        <element name="p">
+            <ref name="Inline"/>
+        </element>
+    </define>
+
+    <!-- Inline elements -->
+    <define name="Inline">
+        <!-- TODO : cite, code, sub, sup... -->
+        <zeroOrMore>
+            <choice>
+                <text/>
+                <element name="em">
+                    <ref name="Inline"/>
+                </element>
+                <element name="i">                    
+                    <ref name="Inline"/>
+                </element>
+                <element name="q">
+                    <ref name="Inline"/>
+                </element>                
+                <element name="sub">
+                    <ref name="Inline"/>
+                </element>
+                <element name="sup">
+                    <ref name="Inline"/>
+                </element>
+                <element name="a">
+                    <attribute name="href">
+                        <data type="anyURI"/>
+                    </attribute>
+                    <ref name="Inline"/>
+                </element>
+                <element name="span">
+                    <ref name="SpanType"/>
+                    <ref name="Inline"/>
+                </element>                
+            </choice>
+        </zeroOrMore>
+    </define>
+
+    <!-- List -->
+    <define name="L">
+        <choice>
+            <element name="ul">
+                <ref name="I"/>
+            </element>
+            <element name="ol">
+                <ref name="I"/>
+            </element>
+        </choice>
+    </define>
+
+    <!-- List item -->
+    <define name="I">
+        <oneOrMore>
+            <element name="li">
+                <ref name="Text"/>
+            </element>
+        </oneOrMore>
+    </define>
+
+    <!-- Table (TODO) -->
+    <define name="Table">
+        <element name="table">
+            <optional>
+                <element name="caption"><text/></element>
+            </optional>
+            <oneOrMore>
+                <element name="tr">
+                    <oneOrMore>
+                        <element name="td">
+                            <ref name="Text"></ref>
+                        </element>
+                    </oneOrMore>
+                </element>
+            </oneOrMore>
+        </element>
+    </define>
+
+    <!-- Image -->
+    <define name="Image">
+        <element name="img">
+            <attribute name="src">
+                <data type="anyURI"/>
+            </attribute>
+            <attribute name="alt">
+                <text/>
+            </attribute>
+        </element>
+    </define>
+
+    <!-- Audio -->
+    <define name="Audio">
+        <element name="audio">
+            <attribute name="src">
+                <data type="anyURI"/>
+            </attribute>
+        </element>
+    </define>
+
+    <!-- Vidéo -->
+    <define name="Video">
+        <element name="video">
+            <attribute name="src">
+                <data type="anyURI"/>
+            </attribute>
+            <attribute name="type">
+                <choice>
+                    <value>video/mp4</value>
+                    <value>video/ogg</value>
+                    <value>video/webm</value>
+                </choice>
+            </attribute>
+        </element>
+    </define>
+
+    <!-- Other external resources -->
+    <define name="Object">
+        <element name="object">
+            <attribute name="type">
+                <choice>
+                    <value></value>
+                    <value>application/vnd.oasis.opendocument.graphics </value>
+                    <value>application/vnd.oasis.opendocument.spreadsheet</value>
+                    <!-- TODO -->
+                </choice>
+            </attribute>
+            <attribute name="data">                
+                <data type="anyURI"/>                
+            </attribute>
+            <empty/>
+        </element>
+    </define>
+
+    <!-- Type Microdata -->
+    <include href="type.rng"/>
+
+</grammar>

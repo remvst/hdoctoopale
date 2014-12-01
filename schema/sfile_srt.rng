@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sng:grammar xmlns:sc="http://www.utc.fr/ics/scenari/v3/core" xmlns:sfm="http://www.utc.fr/ics/scenari/v3/filemeta" xmlns:sng="http://relaxng.org/ns/structure/1.0" xmlns:snga="http://relaxng.org/ns/compatibility/annotations/1.0"  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+<sng:start xmlns:sng="http://relaxng.org/ns/structure/1.0">
+<sng:element name="sfm:srt" snga:title="Fichier SRT">
+<snga:documentation>SRT est un format standard de sous-titres.</snga:documentation>
+<sng:empty/>
+</sng:element>
+</sng:start>
+</sng:grammar>

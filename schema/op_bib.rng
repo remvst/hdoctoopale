@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sng:grammar xmlns:sp="http://www.utc.fr/ics/scenari/v3/primitive" xmlns:op="utc.fr:ics/opale3" xmlns:sc="http://www.utc.fr/ics/scenari/v3/core" xmlns:sng="http://relaxng.org/ns/structure/1.0" xmlns:snga="http://relaxng.org/ns/compatibility/annotations/1.0"  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+<sng:start>
+<sng:element name="sc:item">
+<sng:ref name="op_bib"/>
+</sng:element>
+</sng:start>
+
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_bib">
+<sng:element name="op:bib" snga:title="Bibliographie">
+<snga:documentation>Renseigner une bibliographie</snga:documentation>
+<sng:ref name="op_bibM"/>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_bibM">
+<sng:element name="op:bibM" snga:title="Entrée de bibliographie">
+<sng:element name="sp:id" snga:title="Identifiant">
+<snga:documentation>Renseigner un identifiant</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+<sng:element name="sp:type" snga:title="Type">
+<snga:documentation>Choisir un type de bibliographie</snga:documentation>
+<sng:choice>
+<sng:value type="string" snga:title="Référence webographique">web</sng:value>
+<sng:value type="string" snga:title="Référence bibliographique">bib</sng:value>
+</sng:choice>
+</sng:element>
+<sng:element name="sp:desc" snga:title="Entrée bibliographique">
+<snga:documentation>Nom de l'auteur en majuscules, utilisez les balises pour définir le titre principal</snga:documentation>
+<sng:ref name="op_bibTxt"/>
+</sng:element>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_bibTxt">
+<sng:element name="op:bibTxt" snga:title="Texte">
+<sng:ref name="op_bibTxt_blocs"/>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_bibTxt_blocs">
+<sng:element name="sc:para">
+<sng:ref name="op_bibTxt_id"/>
+<sng:ref name="op_bibTxt_inline"/>
+<sng:optional>
+<sng:attribute name="xml:space">
+<sng:value>preserve</sng:value>
+</sng:attribute>
+</sng:optional>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_bibTxt_inline">
+<sng:zeroOrMore>
+<sng:choice>
+<sng:text/>
+<sng:element name="sc:uLink" snga:title="Lien vers la source web">
+<sng:attribute name="role">
+<sng:value>url</sng:value>
+</sng:attribute>
+<sng:ref name="op_bibTxt_id"/>
+<sng:optional>
+<sng:attribute name="url">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:attribute>
+</sng:optional>
+<sng:optional>
+<sng:attribute name="sc:refUri">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_bibTxt_inline"/>
+</sng:element>
+<sng:element name="sc:textLeaf" snga:title="Titre principal, titre de la publication">
+<sng:attribute name="role">
+<sng:value>title</sng:value>
+</sng:attribute>
+<sng:ref name="op_bibTxt_id"/>
+<sng:text/>
+</sng:element>
+<sng:element name="sc:textLeaf" snga:title="Auteur">
+<sng:attribute name="role">
+<sng:value>auth</sng:value>
+</sng:attribute>
+<sng:ref name="op_bibTxt_id"/>
+<sng:text/>
+</sng:element>
+<sng:element name="sc:textLeaf" snga:title="Date">
+<sng:attribute name="role">
+<sng:value>date</sng:value>
+</sng:attribute>
+<sng:ref name="op_bibTxt_id"/>
+<sng:text/>
+</sng:element>
+<sng:element name="sc:textLeaf" snga:title="Éditeur">
+<sng:attribute name="role">
+<sng:value>ed</sng:value>
+</sng:attribute>
+<sng:ref name="op_bibTxt_id"/>
+<sng:text/>
+</sng:element>
+</sng:choice>
+</sng:zeroOrMore>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_bibTxt_id">
+<sng:optional>
+<sng:attribute name="sc:id">
+<sng:data type="ID"/>
+</sng:attribute>
+</sng:optional>
+</sng:define>
+
+</sng:grammar>

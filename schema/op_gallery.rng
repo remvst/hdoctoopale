@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sng:grammar xmlns:sp="http://www.utc.fr/ics/scenari/v3/primitive" xmlns:op="utc.fr:ics/opale3" xmlns:sc="http://www.utc.fr/ics/scenari/v3/core" xmlns:sng="http://relaxng.org/ns/structure/1.0" xmlns:snga="http://relaxng.org/ns/compatibility/annotations/1.0"  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+<sng:start>
+<sng:element name="sc:item">
+<sng:ref name="op_gallery"/>
+</sng:element>
+</sng:start>
+
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_gallery">
+<sng:element name="op:gallery" snga:title="Galerie d'images">
+<sng:ref name="op_galleryM"/>
+<sng:oneOrMore>
+<sng:element xmlns:sng="http://relaxng.org/ns/structure/1.0" name="sp:img" snga:title="Image">
+<sng:choice>
+<sng:group>
+<sng:attribute name="sc:refUri">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:attribute>
+<sng:empty/>
+</sng:group>
+<sng:empty/>
+</sng:choice>
+</sng:element>
+</sng:oneOrMore>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_galleryM">
+<sng:element name="op:galleryM" snga:title="Meta d'une galerie d'images">
+<sng:element name="sp:title" snga:title="Titre">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:element>
+</sng:define>
+
+</sng:grammar>

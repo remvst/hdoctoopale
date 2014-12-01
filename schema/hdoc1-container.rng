@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar 
+  xmlns="http://relaxng.org/ns/structure/1.0"
+  xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+  ns="urn:utc.fr:ics:hdoc:container" 
+  >
+  
+  <a:documentation>This schema describes the META-INF/container.xml file for hdoc format</a:documentation>
+  <a:documentation>This schema is a derivation of http://www.idpf.org/epub/30/schema/ocf-container-30.rnc
+    from EPUB Open Container Format (http://www.idpf.org/epub/30/spec/epub30-ocf.html)     
+  </a:documentation>
+  
+  <start>
+    <element name="container">
+      <attribute name="version">
+        <value>1.0</value>
+      </attribute>
+      <element name="rootfiles">        
+          <element name="rootfile">
+              <attribute name="full-path">
+                <data type="anyURI"/>                       
+              </attribute>
+              <attribute name="media-type">
+                <value>text/xml</value>
+              </attribute>              
+          </element>        
+      </element>      
+    </element>
+  </start>
+  
+</grammar>

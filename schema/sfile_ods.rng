@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sng:grammar xmlns:sp="http://www.utc.fr/ics/scenari/v3/primitive" xmlns:op="utc.fr:ics/opale3" xmlns:sc="http://www.utc.fr/ics/scenari/v3/core" xmlns:sfm="http://www.utc.fr/ics/scenari/v3/filemeta" xmlns:sng="http://relaxng.org/ns/structure/1.0" xmlns:snga="http://relaxng.org/ns/compatibility/annotations/1.0"  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+<sng:start xmlns:sng="http://relaxng.org/ns/structure/1.0">
+<sng:element name="sfm:ods" snga:title="Classeur OpenDocument">
+<snga:documentation> Ressource au format Open Document Spreadsheet. </snga:documentation>
+<sng:optional>
+<sng:ref name="op_imgM"/>
+</sng:optional>
+</sng:element>
+</sng:start>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_imgM">
+<sng:element name="op:imgM" snga:title="Propriétés de ressources">
+<sng:optional>
+<sng:element name="sp:title" snga:title="Titre">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:info" snga:title="Métadonnées communes">
+<sng:choice>
+<sng:ref name="op_infoBin"/>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:alt" snga:title="Alternative (accessibilité)">
+<snga:documentation>Permet de saisir les informations nécessaires pour l'accessibilité de la ressource.</snga:documentation>
+<sng:optional>
+<sng:element name="sp:type" snga:title="Type d'image">
+<snga:documentation>Par défaut une image est informative.</snga:documentation>
+<sng:choice>
+<sng:value type="string" snga:title="Informative">info</sng:value>
+<sng:value type="string" snga:title="Décorative">deco</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:altTxt" snga:title="Texte de remplacement">
+<snga:documentation>Permet d'expliciter le sens de la ressource pour les personnes qui ne peuvent pas la voir (mal-voyants, non voyants, utilisateurs de navigateurs texte,...).</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:desc" snga:title="Description complète">
+<snga:documentation>Permet de décrire de manière exhaustive le contenu et le sens d'une ressource complexe.</snga:documentation>
+<sng:ref name="op_sTxt"/>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_infoBin">
+<sng:element name="op:infoBin" snga:title="Métadonnées des ressources binaires">
+<sng:optional>
+<sng:element name="sp:cc" snga:title="Licence">
+<snga:documentation>Plus d'info : http://creativecommons.org et http://www.gnu.org</snga:documentation>
+<sng:choice>
+<sng:value type="string" snga:title="Domaine Public (dépréciée)">publicdomain</sng:value>
+<sng:value type="string" snga:title="Creative Commons Zéro">zero</sng:value>
+<sng:value type="string" snga:title="Paternité">by</sng:value>
+<sng:value type="string" snga:title="Paternité - Pas d'Utilisation Commerciale">by-nc</sng:value>
+<sng:value type="string" snga:title="Paternité - Pas d'Utilisation Commerciale - Pas de Modification">by-nc-nd</sng:value>
+<sng:value type="string" snga:title="Paternité - Pas d'Utilisation Commerciale - Partage des Conditions Initiales à l'Identique">by-nc-sa</sng:value>
+<sng:value type="string" snga:title="Paternité - Pas de Modification">by-nd</sng:value>
+<sng:value type="string" snga:title="Paternité - Partage des Conditions Initiales à l'Identique">by-sa</sng:value>
+<sng:value type="string" snga:title="Licence de documentation libre GNU">gnu-fdl</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:ccVersion" snga:title="Version de la licence cc-by">
+<snga:documentation>Renseignez le numéro de version pour les licences cc-by (Creative Commons avec Paternité) uniquement. Par défaut, la dernière version disponible est prise en compte.</snga:documentation>
+<sng:choice>
+<sng:value type="string" snga:title="4.0">4.0</sng:value>
+<sng:value type="string" snga:title="3.0">3.0</sng:value>
+<sng:value type="string" snga:title="2.5">2.5</sng:value>
+<sng:value type="string" snga:title="2.0">2.0</sng:value>
+<sng:value type="string" snga:title="1.0">1.0</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:cpyrgt" snga:title="Paternité ou copyright">
+<sng:ref name="op_sPara"/>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sPara">
+<sng:element name="op:sPara" snga:title="Paragraphe Simple">
+<snga:documentation>Insérer un paragraphe</snga:documentation>
+<sng:ref name="op_sPara_blocs"/>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sPara_blocs">
+<sng:element name="sc:para">
+<sng:ref name="op_sPara_id"/>
+<sng:ref name="op_sPara_inline"/>
+<sng:optional>
+<sng:attribute name="xml:space">
+<sng:value>preserve</sng:value>
+</sng:attribute>
+</sng:optional>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sPara_inline">
+<sng:zeroOrMore>
+<sng:choice>
+<sng:text/>
+<sng:element name="sc:phrase" snga:title="Adresse web, email, lien vers un document externe">
+<sng:attribute name="role">
+<sng:value>url</sng:value>
+</sng:attribute>
+<sng:ref name="op_sPara_id"/>
+<sng:optional>
+<sng:attribute name="xml:lang">
+<sng:data type="string"/>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_urlM"/>
+<sng:ref name="op_sPara_inline"/>
+</sng:element>
+<sng:element name="sc:inlineStyle" snga:title="Important">
+<sng:attribute name="role">
+<sng:value>emp</sng:value>
+</sng:attribute>
+<sng:ref name="op_sPara_id"/>
+<sng:ref name="op_sPara_inline"/>
+</sng:element>
+<sng:element name="sc:inlineStyle" snga:title="Terme étranger">
+<sng:attribute name="role">
+<sng:value>spec</sng:value>
+</sng:attribute>
+<sng:ref name="op_sPara_id"/>
+<sng:optional>
+<sng:ref name="op_txtM"/>
+</sng:optional>
+<sng:ref name="op_sPara_inline"/>
+</sng:element>
+</sng:choice>
+</sng:zeroOrMore>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sPara_id">
+<sng:optional>
+<sng:attribute name="sc:id">
+<sng:data type="ID"/>
+</sng:attribute>
+</sng:optional>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_urlM">
+<sng:element name="op:urlM" snga:title="Url">
+<sng:element name="sp:url" snga:title="Url, adresse web">
+<snga:documentation>Permet de saisir l'adresse de la source sur internet.</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+<sng:optional>
+<sng:element name="sp:title" snga:title="Titre">
+<snga:documentation>Permet de saisir un libellé du site web, définissant son contenu.</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:doc" snga:title="Compléments pour un document lié">
+<snga:documentation>Permet de saisir des précisions si l'url conduit à un document bureautique.</snga:documentation>
+<sng:optional>
+<sng:element name="sp:type" snga:title="Format du document (PDF...)">
+<snga:documentation>Permet de définir le format du document (PDF, RTF...).</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:weight" snga:title="Poids">
+<snga:documentation>Permet de saisir le poids (en kO) du document, afin d'anticiper le temps de téléchargement.</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:lang" snga:title="Langue">
+<snga:documentation>Permet de préciser le code de la langue du fichier, notamment pour les lecteurs d'écran. Une liste de suggestions apparaît au fur et à mesure de la saisie. </snga:documentation>
+<sng:choice>
+<sng:ref name="op_langM"/>
+</sng:choice>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_langM">
+<sng:element name="op:langM" snga:title="Propriété de langue">
+<sng:optional>
+<sng:element name="sp:code" snga:title="Code">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_txtM">
+<sng:element name="op:txtM" snga:title="Propriétés de texte">
+<sng:element name="sp:lang" snga:title="Langue">
+<sng:choice>
+<sng:ref name="op_langM"/>
+</sng:choice>
+</sng:element>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sTxt">
+<sng:element name="op:sTxt" snga:title="Texte Simple">
+<sng:ref name="op_sTxt_blocs"/>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sTxt_blocs">
+<sng:oneOrMore>
+<sng:choice>
+<sng:element name="sc:para" snga:title="Paragraphe">
+<sng:ref name="op_sTxt_id"/>
+<sng:optional>
+<sng:attribute name="xml:space">
+<sng:value>preserve</sng:value>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_sTxt_inline"/>
+</sng:element>
+<sng:element name="sc:itemizedList" snga:title="Liste à puce">
+<sng:optional>
+<sng:attribute name="role">
+<sng:value/>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_sTxt_id"/>
+<sng:zeroOrMore>
+<sng:element name="sc:listItem">
+<sng:ref name="op_sTxt_id"/>
+<sng:ref name="op_sTxt_blocs"/>
+</sng:element>
+</sng:zeroOrMore>
+</sng:element>
+<sng:element name="sc:orderedList" snga:title="Liste ordonnée">
+<sng:optional>
+<sng:attribute name="role">
+<sng:value/>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_sTxt_id"/>
+<sng:zeroOrMore>
+<sng:element name="sc:listItem">
+<sng:ref name="op_sTxt_id"/>
+<sng:ref name="op_sTxt_blocs"/>
+</sng:element>
+</sng:zeroOrMore>
+</sng:element>
+</sng:choice>
+</sng:oneOrMore>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sTxt_inline">
+<sng:zeroOrMore>
+<sng:choice>
+<sng:text/>
+<sng:element name="sc:phrase" snga:title="Adresse web, email, lien vers un document externe">
+<sng:attribute name="role">
+<sng:value>url</sng:value>
+</sng:attribute>
+<sng:ref name="op_sTxt_id"/>
+<sng:optional>
+<sng:attribute name="xml:lang">
+<sng:data type="string"/>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_urlM"/>
+<sng:ref name="op_sTxt_inline"/>
+</sng:element>
+<sng:element name="sc:inlineStyle" snga:title="Important">
+<sng:attribute name="role">
+<sng:value>emp</sng:value>
+</sng:attribute>
+<sng:ref name="op_sTxt_id"/>
+<sng:ref name="op_sTxt_inline"/>
+</sng:element>
+<sng:element name="sc:inlineStyle" snga:title="Terme étranger">
+<sng:attribute name="role">
+<sng:value>spec</sng:value>
+</sng:attribute>
+<sng:ref name="op_sTxt_id"/>
+<sng:optional>
+<sng:ref name="op_txtM"/>
+</sng:optional>
+<sng:ref name="op_sTxt_inline"/>
+</sng:element>
+</sng:choice>
+</sng:zeroOrMore>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sTxt_id">
+<sng:optional>
+<sng:attribute name="sc:id">
+<sng:data type="ID"/>
+</sng:attribute>
+</sng:optional>
+</sng:define>
+</sng:grammar>

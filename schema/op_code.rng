@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sng:grammar xmlns:sp="http://www.utc.fr/ics/scenari/v3/primitive" xmlns:op="utc.fr:ics/opale3" xmlns:sc="http://www.utc.fr/ics/scenari/v3/core" xmlns:sng="http://relaxng.org/ns/structure/1.0" xmlns:snga="http://relaxng.org/ns/compatibility/annotations/1.0"  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+<sng:start>
+<sng:element name="sc:item">
+<sng:ref name="op_code"/>
+</sng:element>
+</sng:start>
+
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_code">
+<sng:element name="op:code" snga:title="Listing informatique">
+<sng:element name="sc:code" snga:title="">
+<sng:attribute name="mimeType">
+<sng:data type="string">
+<sng:param name="minLength ">1</sng:param>
+</sng:data>
+</sng:attribute>
+<sng:text/>
+</sng:element>
+</sng:element>
+</sng:define>
+
+</sng:grammar>

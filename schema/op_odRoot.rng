@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sng:grammar xmlns:sp="http://www.utc.fr/ics/scenari/v3/primitive" xmlns:op="utc.fr:ics/opale3" xmlns:sc="http://www.utc.fr/ics/scenari/v3/core" xmlns:sng="http://relaxng.org/ns/structure/1.0" xmlns:snga="http://relaxng.org/ns/compatibility/annotations/1.0"  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+<sng:start>
+<sng:element name="sc:item">
+<sng:ref name="op_odRoot"/>
+</sng:element>
+</sng:start>
+
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_odRoot">
+<sng:element name="op:odRoot" snga:title="Support Papier">
+<snga:documentation>Permet de publier le support Papier</snga:documentation>
+<sng:ref name="op_odRootM"/>
+<sng:element name="sp:ue" snga:title="Module Opale">
+<sng:attribute name="sc:refUri">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:attribute>
+<sng:empty/>
+</sng:element>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_odRootM">
+<sng:element name="op:odRootM" snga:title="Paramétrage du support Papier">
+<snga:documentation>Permet de paramétrer les éléments que l'on souhaite faire apparaître dans la publication papier</snga:documentation>
+<sng:optional>
+<sng:element name="sp:coll" snga:title="Collection">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:version" snga:title="Version">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:date" snga:title="Date de publication du support">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:id" snga:title="Identifiant">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:auth" snga:title="Auteurs et copyrights">
+<sng:ref name="op_sTxt"/>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:logo" snga:title="Illustration de la couverture">
+<sng:attribute name="sc:refUri">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:attribute>
+<sng:empty/>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:typo" snga:title="Publier la page de la légende">
+<snga:documentation>Légende des icônes des références dans le texte.</snga:documentation>
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:contentFilter" snga:title="Sélection du contenu">
+<snga:documentation>Sélection du contenu à inclure ou à exclure de la publication</snga:documentation>
+<sng:choice>
+<sng:value type="string" snga:title="Version &quot;standard&quot;">standard</sng:value>
+<sng:value type="string" snga:title="Version &quot;courte&quot;">short</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:element name="sp:settings" snga:title="Paramétrage du support">
+<sng:optional>
+<sng:element name="sp:quest" snga:title="Publier les questions de synthèse">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:solPractUc" snga:title="Publier les solutions des exercices rédactionnels">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:solQuiz" snga:title="Publier les solutions des exercices">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:solAssmntUa" snga:title="Publier les solutions des activités d'auto-évaluation">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:glos" snga:title="Publier le glossaire">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:acr" snga:title="Publier la liste des abréviations">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:ref" snga:title="Publier l'index des références">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:bib" snga:title="Publier la bibliographie">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:index" snga:title="Publier l'index des mots clés">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:resource" snga:title="Publier les crédits des ressources">
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:uc" snga:title="Publier les contenus liés (grains) en annexe">
+<snga:documentation>Les grains de contenu référencés dans le texte par un "Renvoi vers un grain de contenu" (mais non présents dans le document) sont publiés en annexe. Oui par défaut.</snga:documentation>
+<sng:choice>
+<sng:value type="string" snga:title="Oui">yes</sng:value>
+<sng:value type="string" snga:title="Non">no</sng:value>
+</sng:choice>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sTxt">
+<sng:element name="op:sTxt" snga:title="Texte Simple">
+<sng:ref name="op_sTxt_blocs"/>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sTxt_blocs">
+<sng:oneOrMore>
+<sng:choice>
+<sng:element name="sc:para" snga:title="Paragraphe">
+<sng:ref name="op_sTxt_id"/>
+<sng:optional>
+<sng:attribute name="xml:space">
+<sng:value>preserve</sng:value>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_sTxt_inline"/>
+</sng:element>
+<sng:element name="sc:itemizedList" snga:title="Liste à puce">
+<sng:optional>
+<sng:attribute name="role">
+<sng:value/>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_sTxt_id"/>
+<sng:zeroOrMore>
+<sng:element name="sc:listItem">
+<sng:ref name="op_sTxt_id"/>
+<sng:ref name="op_sTxt_blocs"/>
+</sng:element>
+</sng:zeroOrMore>
+</sng:element>
+<sng:element name="sc:orderedList" snga:title="Liste ordonnée">
+<sng:optional>
+<sng:attribute name="role">
+<sng:value/>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_sTxt_id"/>
+<sng:zeroOrMore>
+<sng:element name="sc:listItem">
+<sng:ref name="op_sTxt_id"/>
+<sng:ref name="op_sTxt_blocs"/>
+</sng:element>
+</sng:zeroOrMore>
+</sng:element>
+</sng:choice>
+</sng:oneOrMore>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sTxt_inline">
+<sng:zeroOrMore>
+<sng:choice>
+<sng:text/>
+<sng:element name="sc:phrase" snga:title="Adresse web, email, lien vers un document externe">
+<sng:attribute name="role">
+<sng:value>url</sng:value>
+</sng:attribute>
+<sng:ref name="op_sTxt_id"/>
+<sng:optional>
+<sng:attribute name="xml:lang">
+<sng:data type="string"/>
+</sng:attribute>
+</sng:optional>
+<sng:ref name="op_urlM"/>
+<sng:ref name="op_sTxt_inline"/>
+</sng:element>
+<sng:element name="sc:inlineStyle" snga:title="Important">
+<sng:attribute name="role">
+<sng:value>emp</sng:value>
+</sng:attribute>
+<sng:ref name="op_sTxt_id"/>
+<sng:ref name="op_sTxt_inline"/>
+</sng:element>
+<sng:element name="sc:inlineStyle" snga:title="Terme étranger">
+<sng:attribute name="role">
+<sng:value>spec</sng:value>
+</sng:attribute>
+<sng:ref name="op_sTxt_id"/>
+<sng:optional>
+<sng:ref name="op_txtM"/>
+</sng:optional>
+<sng:ref name="op_sTxt_inline"/>
+</sng:element>
+</sng:choice>
+</sng:zeroOrMore>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_sTxt_id">
+<sng:optional>
+<sng:attribute name="sc:id">
+<sng:data type="ID"/>
+</sng:attribute>
+</sng:optional>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_urlM">
+<sng:element name="op:urlM" snga:title="Url">
+<sng:element name="sp:url" snga:title="Url, adresse web">
+<snga:documentation>Permet de saisir l'adresse de la source sur internet.</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+<sng:optional>
+<sng:element name="sp:title" snga:title="Titre">
+<snga:documentation>Permet de saisir un libellé du site web, définissant son contenu.</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:doc" snga:title="Compléments pour un document lié">
+<snga:documentation>Permet de saisir des précisions si l'url conduit à un document bureautique.</snga:documentation>
+<sng:optional>
+<sng:element name="sp:type" snga:title="Format du document (PDF...)">
+<snga:documentation>Permet de définir le format du document (PDF, RTF...).</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:weight" snga:title="Poids">
+<snga:documentation>Permet de saisir le poids (en kO) du document, afin d'anticiper le temps de téléchargement.</snga:documentation>
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+<sng:optional>
+<sng:element name="sp:lang" snga:title="Langue">
+<snga:documentation>Permet de préciser le code de la langue du fichier, notamment pour les lecteurs d'écran. Une liste de suggestions apparaît au fur et à mesure de la saisie. </snga:documentation>
+<sng:choice>
+<sng:ref name="op_langM"/>
+</sng:choice>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_langM">
+<sng:element name="op:langM" snga:title="Propriété de langue">
+<sng:optional>
+<sng:element name="sp:code" snga:title="Code">
+<sng:data type="string">
+<sng:param name="minLength">1</sng:param>
+</sng:data>
+</sng:element>
+</sng:optional>
+</sng:element>
+</sng:define>
+<sng:define xmlns:sng="http://relaxng.org/ns/structure/1.0" name="op_txtM">
+<sng:element name="op:txtM" snga:title="Propriétés de texte">
+<sng:element name="sp:lang" snga:title="Langue">
+<sng:choice>
+<sng:ref name="op_langM"/>
+</sng:choice>
+</sng:element>
+</sng:element>
+</sng:define>
+
+</sng:grammar>

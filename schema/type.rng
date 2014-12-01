@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+    ns="http://www.utc.fr/ics/hdoc/xhtml">
+
+    <a:documentation>Last update : 2014-11-20</a:documentation>
+    <a:documentation>Changes since last update : 
+        Adding value "opale-expUc" for data-hdoc-type on Section
+    </a:documentation>
+    
+    <!-- Type Microdata -->
+    <define name="SectionType">
+        <optional>
+            <attribute name="data-hdoc-type">
+                <choice>
+                    <value>introduction</value>
+                    <value>conclusion</value>
+                    <value>opale-expUc</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+
+    <define name="DivType">
+        <optional>
+            <attribute name="data-hdoc-type">
+                <choice>
+                    <value>emphasis</value>
+                    <value>complement</value>
+                    <value>definition</value>
+                    <value>example</value>
+                    <value>remark</value>
+                    <value>warning</value>
+                    <value>advice</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+
+    <define name="SpanType">
+        <optional>
+            <attribute name="data-hdoc-type">
+                <choice>
+                    <value>syntax</value>
+                    <value>latex</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+
+</grammar>
