@@ -377,7 +377,7 @@
         </sc:textLeaf>
       </xsl:template>
       <xsl:template match="h:a">
-        <sc:uLink url="{./@href}"><xsl:apply-templates select="./*"/></sc:uLink>
+        <sc:uLink url="{./@href}" role="acr"><xsl:apply-templates select="./*"/></sc:uLink>
       </xsl:template>
       <xsl:template match="h:ul">
         <xsl:choose>
