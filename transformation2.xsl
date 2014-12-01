@@ -73,18 +73,16 @@
     </xsl:template>
 
     <!-- Introduction <section> -->
-    <xsl:template match="h:section[@data-hdoc-type='introduction' or @data-hdoc-type='intro']|h:div[@data-hdoc-type='introduction' or @data-hdoc-type='intro']">
+    <xsl:template match="h:section[@data-hdoc-type='introduction']">
       <sp:intro>
         <op:res>
-          <!-- Going straight to the content -->
-          <!-- For the introduction, we ignore <header> and <footer> -->
           <xsl:apply-templates select="./h:div/h:p" />
         </op:res>
       </sp:intro>
     </xsl:template>
 
     <!-- Conclusion <section> -->
-    <xsl:template match="h:section[@data-hdoc-type='conclusion' or @data-hdoc-type='conclu']">
+    <xsl:template match="h:section[@data-hdoc-type='conclusion']">
       <sp:conclu>
         <op:res>
           <!-- Going straight to the content -->
@@ -95,7 +93,7 @@
     </xsl:template>
 
     <!-- Grains <sections> -->
-    <xsl:template match="h:section[@data-hdoc-type='grain' or @data-hdoc-type='opale-expUc']">
+    <xsl:template match="h:section[@data-hdoc-type='opale-expUc']">
       <sp:courseUc>
         <op:expUc>
           <op:uM>
@@ -130,12 +128,12 @@
           </op:ueDivM>
 
           <!-- Intro for a division -->
-          <xsl:if test="./h:header/h:p">
+          <xsl:if test="./h:div[data-hdoc-type='introduction']">
             <sp:intro>
               <op:res>
                 <sp:txt>
                   <op:txt>
-                    <xsl:apply-templates select="./h:header/h:p" />
+                    <xsl:apply-templates select="./h:div[data-hdoc-type='introduction']/h:p" />
                   </op:txt>
                 </sp:txt>
               </op:res>
@@ -222,14 +220,13 @@
           </sp:courseUc>
           <xsl:apply-templates select="./h:section"/>
 
-
           <!-- Conclusion for a division -->
-          <xsl:if test="./h:footer/h:p">
+          <xsl:if test="./h:div[data-hdoc-type='conclusion']">
             <sp:conclu>
               <op:res>
                 <sp:txt>
                   <op:txt>
-                    <xsl:apply-templates select="./h:footer/h:p" />
+                    <xsl:apply-templates select="./h:div[data-hdoc-type='conclusion']/h:p" />
                   </op:txt>
                 </sp:txt>
               </op:res>
