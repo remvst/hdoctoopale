@@ -26,6 +26,8 @@
         <optional>
             <attribute name="data-hdoc-type">
                 <choice>
+                    <value>introduction</value>
+                    <value>conclusion</value>
                     <value>emphasis</value>
                     <value>complement</value>
                     <value>definition</value>
