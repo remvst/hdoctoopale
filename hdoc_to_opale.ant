@@ -4,6 +4,7 @@
 	<property name="InputPath" value="sample02.hdoc"/>
 	<property name="OutputPath"	value="sample02.scar"/>
 	-->
+
 	<taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
 		<classpath>
 			<pathelement location="lib/jing.jar"/>
@@ -14,7 +15,10 @@
 		<!-- This is the main target : it is called whether by the project (as the default target) or by the user/converter
 		website, if specified in the command line. Basically, this target consists in several targets/ant buildfiles calls. -->
 		<antcall target="CleanDirectory"/>
+
 		<antcall target="UnzipHdocFile"/>
+		<antcall target="validateInput" />
+
 		<antcall target="FindContentFiles"/>
 		<ant antfile="generateContentPath.xml"/>
 		<antcall target="ZipScar"/>
@@ -82,8 +86,12 @@
 		</move>
 	</target>
 
-	<!-- Validating the output XML -->
-	<!-- If the output can't be validated, it will still be output and might work on Opale -->
+	<!-- Validating the XML container file -->
+	<target name="validateInput">	
+		<jing file="decompressedHdoc/META-INF/container.xml" rngfile="schema/hdoc1-container.rng"></jing>
+	</target>
+
+	<!-- Validating the XML output -->
 	<target name="validateOutput">	
 		<echo>Validating output...</echo>
 		<jing file="decompressedOpale/outputFile.xml" rngfile="schema/op_ue.rng"></jing>		

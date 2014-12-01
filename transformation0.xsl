@@ -7,12 +7,22 @@
 	
     <xsl:template match="c:container">
         <project name="getContentFileAndTransformIt" basedir="." default="start">
+            <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
+                <classpath>
+                    <pathelement location="lib/jing.jar"/>
+                </classpath>
+            </taskdef>
+
             <xsl:apply-templates select="./c:rootfiles"/>
         </project>
     </xsl:template>
     
     <xsl:template match="c:rootfiles">
         <target name="start">
+            <echo>Validating content <xsl:value-of select="c:rootfile/@full-path" />...</echo>
+
+            <jing file="decompressedHdoc/{c:rootfile/@full-path}" rngfile="schema/hdoc1-xhtml.rng"></jing>
+
             <xslt
                 in="decompressedHdoc/{c:rootfile/@full-path}"
                 out="moveRessourceFiles.xml"
