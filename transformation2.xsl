@@ -93,7 +93,7 @@
     </xsl:template>
 
     <!-- Grains <sections> -->
-    <xsl:template match="h:section[@data-hdoc-type='opale-expUc']">
+    <xsl:template match="h:section[@data-hdoc-type='unit-of-content']">
       <sp:courseUc>
         <op:expUc>
           <op:uM>
