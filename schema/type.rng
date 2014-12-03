@@ -4,9 +4,9 @@
     datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
     ns="http://www.utc.fr/ics/hdoc/xhtml">
 
-    <a:documentation>Last update : 2014-11-20</a:documentation>
+    <a:documentation>Last update : 2014-12-03</a:documentation>
     <a:documentation>Changes since last update : 
-        Adding value "opale-expUc" for data-hdoc-type on Section
+        Changing value from "opale-expUc" to "unit-of-content"
     </a:documentation>
     
     <!-- Type Microdata -->
@@ -16,7 +16,7 @@
                 <choice>
                     <value>introduction</value>
                     <value>conclusion</value>
-                    <value>opale-expUc</value>
+                    <value>unit-of-content</value>
                 </choice>
             </attribute>
         </optional>
@@ -26,15 +26,13 @@
         <optional>
             <attribute name="data-hdoc-type">
                 <choice>
-                    <value>introduction</value>
-                    <value>conclusion</value>
                     <value>emphasis</value>
                     <value>complement</value>
                     <value>definition</value>
                     <value>example</value>
                     <value>remark</value>
                     <value>warning</value>
-                    <value>advice</value>
+                    <value>advice</value>                    
                 </choice>
             </attribute>
         </optional>
