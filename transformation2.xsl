@@ -92,8 +92,8 @@
       </sp:conclu>
     </xsl:template>
 
-    <!-- Grains <sections> -->
-    <xsl:template match="h:section[@data-hdoc-type='unit-of-content']">
+    <!-- Grains <sections>. A grain is either a unit-of-content, or does not contain sub divisions (<section>'s) -->
+    <xsl:template match="h:section[@data-hdoc-type='unit-of-content' or not(h:section)]">
       <sp:courseUc>
         <op:expUc>
           <op:uM>
@@ -200,21 +200,24 @@
             </sp:courseUc>
           </xsl:if>
 
-          <sp:courseUc>
-            <op:expUc>
-              <op:uM>
-                <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
-              </op:uM>
-              <!-- The not() could be simplified, but strangely it doesn't work. Feel free to fix. -->
-              <xsl:if test="./h:div[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]">
-                <sp:pb>
-                  <op:pb>
-                    <xsl:apply-templates select="./h:div[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]"/>
-                  </op:pb>
-                </sp:pb>
-              </xsl:if>
-            </op:expUc>
-          </sp:courseUc>
+          <!-- Taking care of the content. If content exists, we add it as a "grain" (we also add a title to it) -->
+          <xsl:if test="./h:div">
+            <sp:courseUc>
+              <op:expUc>
+                <op:uM>
+                  <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
+                </op:uM>
+                <!-- The not() could be simplified, but strangely it doesn't work. Feel free to fix. -->
+                <xsl:if test="./h:div">
+                  <sp:pb>
+                    <op:pb>
+                      <xsl:apply-templates select="./h:div"/>
+                    </op:pb>
+                  </sp:pb>
+                </xsl:if>
+              </op:expUc>
+            </sp:courseUc>
+          </xsl:if>
 
           <!-- Applying templates to section that are neither an introduction nor a conclusion -->
           <xsl:apply-templates select="./h:section[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]"/>
