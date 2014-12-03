@@ -128,10 +128,10 @@
           </op:ueDivM>
 
           <!-- Intro for a division -->
-          <xsl:if test="./h:div[@data-hdoc-type='introduction']">
+          <xsl:if test="./h:section[@data-hdoc-type='introduction']">
             <sp:intro>
               <op:res>
-                <xsl:apply-templates select="./h:div[@data-hdoc-type='introduction']/h:p" />
+                <xsl:apply-templates select="./h:section[@data-hdoc-type='introduction']/h:div/h:p" />
               </op:res>
             </sp:intro>
           </xsl:if>
@@ -216,13 +216,14 @@
             </op:expUc>
           </sp:courseUc>
 
-          <xsl:apply-templates select="./h:section"/>
+          <!-- Applying templates to section that are neither an introduction nor a conclusion -->
+          <xsl:apply-templates select="./h:section[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]"/>
 
           <!-- Conclusion for a division -->
-          <xsl:if test="./h:div[@data-hdoc-type='conclusion']">
+          <xsl:if test="./h:section[@data-hdoc-type='conclusion']">
             <sp:conclu>
               <op:res>
-                <xsl:apply-templates select="./h:div[@data-hdoc-type='conclusion']/h:p" />
+                <xsl:apply-templates select="./h:section[@data-hdoc-type='conclusion']/h:div/h:p" />
               </op:res>
             </sp:conclu>
           </xsl:if>
