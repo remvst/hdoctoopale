@@ -124,7 +124,13 @@
       <sp:courseUc>
         <op:expUc>
           <op:uM>
-            <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
+            <sp:title>
+              <!-- Adding a default value for titles (Opale requires a title to be specified) -->
+              <xsl:if test="not(./h:header/h:h1/text())">
+                Untitled
+              </xsl:if>
+              <xsl:value-of select="./h:header/h:h1"/>
+            </sp:title>
           </op:uM>
 
           <!-- TODO test level of sub division (section/section/section) -->
@@ -146,7 +152,14 @@
       <sp:div>
         <op:expUcDiv>
           <op:expUcDivM>
-            <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
+            <sp:title>
+              <!-- Adding a default value for titles (Opale requires a title to be specified) -->
+              <xsl:if test="not(./h:header/h:h1/text())">
+                Untitled
+              </xsl:if>
+              
+              <xsl:value-of select="./h:header/h:h1"/>
+            </sp:title>
           </op:expUcDivM>
 
           <!-- TODO test level of sub division (section/section/section) -->
@@ -384,6 +397,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:template>
+
       <xsl:template match="h:i">
         <sc:inlineStyle role="spec">
           <xsl:apply-templates select="./* | ./text()"/>
