@@ -68,26 +68,30 @@
 
   <!-- Body related templates. -->
     <xsl:template match="h:body">
+      <xsl:if test="./h:header/h:div[@data-hdoc-type = 'introduction']">
+        <xsl:apply-templates select="./h:header/h:div[@data-hdoc-type = 'introduction']" />
+      </xsl:if>
+
       <!-- Right now this template is not necessary, since sections are the only possible descendants of body. -->
       <xsl:apply-templates select="./h:section"/>
     </xsl:template>
 
     <!-- Introduction <section> -->
-    <xsl:template match="h:section[@data-hdoc-type='introduction']">
+    <xsl:template match="h:div[@data-hdoc-type='introduction']">
       <sp:intro>
         <op:res>
-          <xsl:apply-templates select="./h:div/h:p" />
+          <xsl:apply-templates select="./h:p" />
         </op:res>
       </sp:intro>
     </xsl:template>
 
     <!-- Conclusion <section> -->
-    <xsl:template match="h:section[@data-hdoc-type='conclusion']">
+    <xsl:template match="h:div[@data-hdoc-type='conclusion']">
       <sp:conclu>
         <op:res>
           <!-- Going straight to the content -->
           <!-- For the conclusion, we ignore <header> and <footer> -->
-          <xsl:apply-templates select="./h:div/h:p"/>
+          <xsl:apply-templates select="./h:p" />
         </op:res>
       </sp:conclu>
     </xsl:template>
@@ -100,7 +104,7 @@
             <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
           </op:uM>
 
-          <!-- In a grain, there can only be direct content (no division within it) -->
+          <!-- TODO test level of sub division (section/section/section) -->
           <xsl:if test="./h:div">
             <sp:pb>
               <op:pb>
@@ -108,8 +112,32 @@
               </op:pb>
             </sp:pb>
           </xsl:if>
+
+          <!-- Applying sub sections -->
+          <xsl:apply-templates select="./h:section" mode="under-unit-of-content" />
         </op:expUc>
       </sp:courseUc>
+    </xsl:template>
+
+    <xsl:template match="h:section" mode="under-unit-of-content">
+      <sp:div>
+        <op:expUcDiv>
+          <op:expUcDivM>
+            <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
+          </op:expUcDivM>
+
+          <!-- TODO test level of sub division (section/section/section) -->
+          <xsl:if test="./h:div">
+            <sp:pb>
+              <op:pb>
+                <xsl:apply-templates select="./h:div"/>
+              </op:pb>
+            </sp:pb>
+          </xsl:if>
+
+          <xsl:apply-templates select="./h:section" mode="under-unit-of-content" />
+        </op:expUcDiv>
+      </sp:div>
     </xsl:template>
 
     <!-- Basic <section> (nothing was specified) -->
@@ -118,7 +146,6 @@
       <!-- For now there are no specific processes applied on sections with an "introduction" or "conclusion" value in their data-hdoc-type attribute.
       They are processed the same as standard sections.
       -->
-
       <sp:div>
         <op:ueDiv>
           <op:ueDivM>
@@ -128,13 +155,7 @@
           </op:ueDivM>
 
           <!-- Intro for a division -->
-          <xsl:if test="./h:section[@data-hdoc-type='introduction']">
-            <sp:intro>
-              <op:res>
-                <xsl:apply-templates select="./h:section[@data-hdoc-type='introduction']/h:div/h:p" />
-              </op:res>
-            </sp:intro>
-          </xsl:if>
+          <xsl:apply-templates select="./h:header/h:div[@data-hdoc-type='introduction']" />
 
           <!-- Since Opale's "Division" doesn't support metadatas, I chose to create a new "Grain" child which only contains metadatas. -->
           <xsl:if test="./h:header/h:div or ./h:footer">
@@ -223,13 +244,7 @@
           <xsl:apply-templates select="./h:section[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]"/>
 
           <!-- Conclusion for a division -->
-          <xsl:if test="./h:section[@data-hdoc-type='conclusion']">
-            <sp:conclu>
-              <op:res>
-                <xsl:apply-templates select="./h:section[@data-hdoc-type='conclusion']/h:div/h:p" />
-              </op:res>
-            </sp:conclu>
-          </xsl:if>
+          <xsl:apply-templates select="./h:header/h:div[@data-hdoc-type='conclusion']" />
 
         </op:ueDiv>
       </sp:div>
@@ -372,7 +387,16 @@
         </sc:textLeaf>
       </xsl:template>
       <xsl:template match="h:a">
-        <sc:uLink url="{./@href}" role="acr"><xsl:apply-templates select="./*"/></sc:uLink>
+        <!-- TODO -->
+        <!--<sc:uLink url="{./@href}"><xsl:apply-templates select="./*"/></sc:uLink>-->
+        <sc:phrase role="url">
+          <op:urlM>
+            <sp:url>
+              <xsl:value-of select="./@href"/>
+            </sp:url>
+          </op:urlM>
+          <xsl:value-of select="." />
+        </sc:phrase>
       </xsl:template>
       <xsl:template match="h:ul">
         <xsl:choose>
