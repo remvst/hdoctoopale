@@ -19,9 +19,7 @@
     
     <xsl:template match="c:rootfiles">
         <target name="start">
-            <echo>Validating content <xsl:value-of select="c:rootfile/@full-path" />...</echo>
-
-            <jing file="decompressedHdoc/{c:rootfile/@full-path}" rngfile="schema/hdoc1-xhtml.rng"></jing>
+            <!--<jing file="decompressedHdoc/{c:rootfile/@full-path}" rngfile="schema/hdoc1-xhtml.rng"></jing>-->
 
             <xslt
                 in="decompressedHdoc/{c:rootfile/@full-path}"
