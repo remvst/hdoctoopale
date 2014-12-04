@@ -97,6 +97,10 @@
 
       <!-- Right now this template is not necessary, since sections are the only possible descendants of body. -->
       <xsl:apply-templates select="./h:section"/>
+
+      <xsl:if test="./h:footer/h:div[@data-hdoc-type = 'conclusion']">
+        <xsl:apply-templates select="./h:footer/h:div[@data-hdoc-type = 'conclusion']" />
+      </xsl:if>
     </xsl:template>
 
     <!-- Introduction <section> -->
@@ -157,7 +161,7 @@
               <xsl:if test="not(./h:header/h:h1/text())">
                 Untitled
               </xsl:if>
-              
+
               <xsl:value-of select="./h:header/h:h1"/>
             </sp:title>
           </op:expUcDivM>
@@ -194,7 +198,7 @@
           <xsl:apply-templates select="./h:header/h:div[@data-hdoc-type='introduction']" />
 
           <!-- Since Opale's "Division" doesn't support metadatas, I chose to create a new "Grain" child which only contains metadatas. -->
-          <xsl:if test="./h:header/h:div or ./h:footer">
+          <xsl:if test="./h:header/h:div[@data-hdoc-type != 'introduction' and @data-hdoc-type != 'conclusion'] or ./h:footer[@data-hdoc-type != 'introduction' and @data-hdoc-type != 'conclusion']">
             <sp:courseUc>
               <op:expUc>
                 <op:uM>
