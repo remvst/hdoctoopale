@@ -490,6 +490,9 @@
           <xsl:apply-templates select="./* | ./text()"/>
         </sc:textLeaf>        
       </xsl:template>
+      <xsl:template match="h:span">
+       <xsl:apply-templates select="./* | ./text()"/>
+      </xsl:template>
       
     <!-- Table related templates -->
       <xsl:template match="h:table">
@@ -557,7 +560,7 @@
       <xsl:template match="h:meta[@generator]"/>
       <xsl:template match="h:footer/h:div[@data-hdoc-type = 'categories']"/>
     <!-- Other. -->
-      <xsl:template match="h:span"/> <!-- Its content is already used in several templates, according to its location and microdata. -->
+      <!--<xsl:template match="h:span"/>--> <!-- Its content is already used in several templates, according to its location and microdata. -->
       <xsl:template match="h:header"/> <!-- Its content is already used in <xsl:template match="h:section"> -->
       <xsl:template match="h:h6"/> <!-- Its content is already used in <xsl:template match="h:div"> -->
       <xsl:template match="h:h1"/> <!-- Its content is already used in <xsl:template match="h:section"> -->
