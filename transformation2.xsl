@@ -26,10 +26,39 @@
         <sp:info>
           <op:info>
             <xsl:apply-templates select="./h:meta"/>
+
+            <!-- Author: in case several authors are specified, we don't want to get an error for not respecting the schema -->
+            <xsl:if test="./h:meta[@name='author']">
+              <sp:cpyrgt>
+                <op:sPara>
+                  <sc:para>
+                    <xsl:call-template name="join">
+                        <xsl:with-param name="list" select="./h:meta[@name='author']/@content" />
+                        <xsl:with-param name="separator" select="', '" />
+                    </xsl:call-template>
+                  </sc:para>
+                </op:sPara>
+              </sp:cpyrgt>
+            </xsl:if>
+
           </op:info>
         </sp:info>
       </op:ueM>
     </xsl:template>
+
+    <!-- Join template found at http://stackoverflow.com/questions/12585974/xslt-merging-concatinating-values-of-siblings-nodes-of-same-name-into-single-nod -->
+    <xsl:template name="join">
+        <xsl:param name="list" />
+        <xsl:param name="separator"/>
+
+        <xsl:for-each select="$list">
+            <xsl:value-of select="." />
+            <xsl:if test="position() != last()">
+                <xsl:value-of select="$separator" />
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:template>
+
     <xsl:template match="h:meta[@name]">
     <xsl:choose>
       <xsl:when test="./@name = 'description'"/> <!-- Unsupported : Opale doesn't provide any description metadata. -->
@@ -40,13 +69,7 @@
           </op:keywds>
         </sp:keywds>
       </xsl:when>
-      <xsl:when test="./@name = 'author'">
-        <sp:cpyrgt>
-          <op:sPara>
-            <sc:para><xsl:value-of select="./@content"/></sc:para>
-          </op:sPara>
-        </sp:cpyrgt>
-      </xsl:when>
+      <xsl:when test="./@name = 'author'"/> <!-- Done above -->
       <xsl:when test="./@name = 'rights'">
         <xsl:choose>
           <xsl:when test="./@content = 'http://creativecommons.org/publicdomain/zero/1.0/deed.en'"><sp:cc>zero</sp:cc></xsl:when>
