@@ -4,9 +4,13 @@
     datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
     ns="http://www.utc.fr/ics/hdoc/xhtml">
 
-    <a:documentation>Last update : 2014-12-03</a:documentation>
+    <a:documentation>Last update : 2014-12-04</a:documentation>
     <a:documentation>Changes since last update : 
-        Changing value from "opale-expUc" to "unit-of-content"
+        In order to manage quiz : 
+        - Adding multiple-choice-question and fill-in-the-blank to section
+        - Adding question, choice-correct, choice-uncorrect and explanation to div
+        - Adding blank to span
+        - Externalizing ObjectType and VideoType from main schema
     </a:documentation>
     
     <!-- Type Microdata -->
@@ -17,6 +21,8 @@
                     <value>introduction</value>
                     <value>conclusion</value>
                     <value>unit-of-content</value>
+                    <value>multiple-choice-question</value>
+                    <value>fill-in-the-blank</value> 
                 </choice>
             </attribute>
         </optional>
@@ -26,13 +32,19 @@
         <optional>
             <attribute name="data-hdoc-type">
                 <choice>
+                    <!-- block management -->
                     <value>emphasis</value>
                     <value>complement</value>
                     <value>definition</value>
                     <value>example</value>
                     <value>remark</value>
                     <value>warning</value>
-                    <value>advice</value>                    
+                    <value>advice</value> 
+                    <!-- quiz management -->
+                    <value>question</value>
+                    <value>choice-correct</value>
+                    <value>choice-incorrect</value>
+                    <value>explanation</value>
                 </choice>
             </attribute>
         </optional>
@@ -44,9 +56,30 @@
                 <choice>
                     <value>syntax</value>
                     <value>latex</value>
+                    <!-- quiz management -->
+                    <value>blank</value>
                 </choice>
             </attribute>
         </optional>
     </define>
+    
+    <define name="ObjectType">
+        <attribute name="type">
+            <choice>                    
+                <value>application/vnd.oasis.opendocument.graphics </value>
+                <value>application/vnd.oasis.opendocument.spreadsheet</value>
+                <value>application/pdf</value>                    
+            </choice>
+        </attribute>
+    </define>
 
+    <define name="VideoType">
+        <attribute name="type">
+            <choice>
+                <value>video/mp4</value>
+                <value>video/ogg</value>
+                <value>video/webm</value>
+            </choice>
+        </attribute>
+    </define>
 </grammar>

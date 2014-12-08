@@ -8,10 +8,11 @@
     <a:documentation>This schema is a restriction of XHTML (it validates XHTML
         schema, if namespace is changed to http://www.w3.org/1999/xhtml)</a:documentation>
     
-    <a:documentation>Last update : 2014-11-03</a:documentation>
+    <a:documentation>Last update : 2014-12-04</a:documentation>
     <a:documentation>Changes since last update : 
-        Correcting documentation
-        Correcting meta name="generator" content="HdocConverter/Optim1.2"
+        Adding object type -> application/pdf
+        Adding introduction and conclusion to section header and footer
+        Externalizing ObjectType and VideoType (to type.rng)
     </a:documentation>
     
     <start>
@@ -124,6 +125,14 @@
                         <text/>
                     </element>
                 </optional>
+                <optional>
+                    <element name="div">
+                        <attribute name="data-hdoc-type">
+                            <value>introduction</value>
+                        </attribute>
+                        <text/>
+                    </element>
+                </optional>
             </element>
             <!-- optional content of the section-->
             <optional>
@@ -137,6 +146,14 @@
             <optional>
                 <element name="footer">
                     <optional>
+                        <element name="div">
+                            <attribute name="data-hdoc-type">
+                                <value>conclusion</value>
+                            </attribute>
+                            <text/>
+                        </element>
+                    </optional>
+                    <optional>                        
                         <element name="div">
                             <attribute name="data-hdoc-type">
                                 <value>tags</value>
@@ -269,7 +286,7 @@
         </oneOrMore>
     </define>
 
-    <!-- Table (TODO) -->
+    <!-- Table -->
     <define name="Table">
         <element name="table">
             <optional>
@@ -314,27 +331,14 @@
             <attribute name="src">
                 <data type="anyURI"/>
             </attribute>
-            <attribute name="type">
-                <choice>
-                    <value>video/mp4</value>
-                    <value>video/ogg</value>
-                    <value>video/webm</value>
-                </choice>
-            </attribute>
+            <ref name="VideoType"/>
         </element>
     </define>
 
     <!-- Other external resources -->
     <define name="Object">
         <element name="object">
-            <attribute name="type">
-                <choice>
-                    <value></value>
-                    <value>application/vnd.oasis.opendocument.graphics </value>
-                    <value>application/vnd.oasis.opendocument.spreadsheet</value>
-                    <!-- TODO -->
-                </choice>
-            </attribute>
+            <ref name="ObjectType"/>
             <attribute name="data">                
                 <data type="anyURI"/>                
             </attribute>
@@ -342,7 +346,7 @@
         </element>
     </define>
 
-    <!-- Type Microdata -->
+    <!-- Microdata and other Types -->
     <include href="type.rng"/>
 
 </grammar>
