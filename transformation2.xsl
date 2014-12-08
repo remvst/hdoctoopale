@@ -383,24 +383,34 @@
   
   <!-- Div related templates. -->
     <!-- Text related templates -->
-      <xsl:template match="h:p">
+      <xsl:template match="h:p[1]">
         <xsl:choose>
-          <xsl:when test="parent::*[name() = 'div']"> <!-- If this <p> is a direct child of a <div> then it must be surrounded by Opale's text markups. -->
+          <xsl:when test="parent::*[name() = 'div']">
             <sp:txt>
               <op:txt>
-                <sc:para>
-                  <xsl:apply-templates select="./* | ./text()"/> <!-- <xsl:apply-templates select="./* | ./text()"/> -->
-                </sc:para>
+                <xsl:call-template name="psuperior"/>
               </op:txt>
             </sp:txt>
           </xsl:when>
           <xsl:otherwise>
-            <sc:para>
-              <xsl:apply-templates select="./* | ./text()"/> <!-- <xsl:apply-templates select="./* | ./text()"/> -->
-            </sc:para>
+            <xsl:call-template name="psuperior"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:template>
+
+      <xsl:template name="psuperior">
+        <xsl:for-each select=". | ./following-sibling::*">
+          <xsl:choose>
+            <xsl:when test="name() = 'p'">
+              <sc:para>
+                <xsl:apply-templates select="./* | ./text()"/>
+              </sc:para>
+            </xsl:when>
+          </xsl:choose>
+        </xsl:for-each>
+      </xsl:template>
+
+      <xsl:template match="h:p"/>
 
       <xsl:template match="h:i">
         <sc:inlineStyle role="spec">
@@ -428,14 +438,17 @@
         </sc:textLeaf>
       </xsl:template>
       <xsl:template match="h:a">
-        <!-- TODO -->
-        <!--<sc:uLink url="{./@href}"><xsl:apply-templates select="./*"/></sc:uLink>-->
         <sc:phrase role="url">
           <op:urlM>
             <sp:url>
               <xsl:value-of select="./@href"/>
             </sp:url>
           </op:urlM>
+          <xsl:if test="./@title">
+            <sp:title>
+              <xsl:value-of select="./@title"/>
+            </sp:title>
+          </xsl:if>
           <xsl:value-of select="." />
         </sc:phrase>
       </xsl:template>
