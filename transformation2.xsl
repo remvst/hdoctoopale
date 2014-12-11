@@ -274,9 +274,13 @@
             <sp:courseUc>
               <op:expUc>
                 <op:uM>
-                  <sp:title><xsl:value-of select="./h:header/h:h1"/></sp:title>
+                  <xsl:if test="./h:header/h:h1">
+                    <sp:title>
+                      <xsl:value-of select="./h:header/h:h1"/>
+                    </sp:title>
+                  </xsl:if>
                 </op:uM>
-                <!-- The not() could be simplified, but strangely it doesn't work. Feel free to fix. -->
+
                 <xsl:if test="./h:div">
                   <sp:pb>
                     <op:pb>
@@ -304,7 +308,11 @@
       <xsl:when test="./@data-hdoc-type = 'emphasis'">
         <sp:basic>
           <op:pbTi>
-            <xsl:if test="./h:h6"><sp:title><xsl:value-of select="./h:h6"/></sp:title></xsl:if>
+            <xsl:if test="string-length(./h:h6/text()) > 0">
+              <sp:title>
+                <xsl:value-of select="./h:h6"/>
+              </sp:title>
+            </xsl:if>
           </op:pbTi>
           <op:res>
             <xsl:apply-templates select="./*"/>
@@ -314,7 +322,11 @@
       <xsl:when test="./@data-hdoc-type = 'complement'">
         <sp:comp>
           <op:pbTi>
-            <xsl:if test="./h:h6"><sp:title><xsl:value-of select="./h:h6"/></sp:title></xsl:if>
+            <xsl:if test="string-length(./h:h6/text()) > 0">
+              <sp:title>
+                <xsl:value-of select="./h:h6"/>
+              </sp:title>
+            </xsl:if>
           </op:pbTi>
           <op:res>
             <xsl:apply-templates select="./*"/>
@@ -324,7 +336,11 @@
       <xsl:when test="./@data-hdoc-type = 'definition'">
         <sp:def>
           <op:pbTi>
-            <xsl:if test="./h:h6"><sp:title><xsl:value-of select="./h:h6"/></sp:title></xsl:if>
+            <xsl:if test="string-length(./h:h6/text()) > 0">
+              <sp:title>
+                <xsl:value-of select="./h:h6"/>
+              </sp:title>
+            </xsl:if>
           </op:pbTi>
           <op:res>
             <xsl:apply-templates select="./*"/>
@@ -334,7 +350,11 @@
       <xsl:when test="./@data-hdoc-type = 'example'">
         <sp:ex>
           <op:pbTi>
-            <xsl:if test="./h:h6"><sp:title><xsl:value-of select="./h:h6"/></sp:title></xsl:if>
+            <xsl:if test="string-length(./h:h6/text()) > 0">
+              <sp:title>
+                <xsl:value-of select="./h:h6"/>
+              </sp:title>
+            </xsl:if>
           </op:pbTi>
           <op:res>
             <xsl:apply-templates select="./*"/>
@@ -344,7 +364,11 @@
       <xsl:when test="./@data-hdoc-type = 'remark'">
         <sp:rem>
           <op:pbTi>
-            <xsl:if test="./h:h6"><sp:title><xsl:value-of select="./h:h6"/></sp:title></xsl:if>
+            <xsl:if test="string-length(./h:h6/text()) > 0">
+              <sp:title>
+                <xsl:value-of select="./h:h6"/>
+              </sp:title>
+            </xsl:if>
           </op:pbTi>
           <op:res>
             <xsl:apply-templates select="./*"/>
@@ -354,7 +378,11 @@
       <xsl:when test="./@data-hdoc-type = 'warning'">
         <sp:warning>
           <op:pbTi>
-            <xsl:if test="./h:h6"><sp:title><xsl:value-of select="./h:h6"/></sp:title></xsl:if>
+            <xsl:if test="string-length(./h:h6/text()) > 0">
+              <sp:title>
+                <xsl:value-of select="./h:h6"/>
+              </sp:title>
+            </xsl:if>
           </op:pbTi>
           <op:res>
             <xsl:apply-templates select="./*"/>
@@ -364,7 +392,11 @@
       <xsl:when test="./@data-hdoc-type = 'advice'">
         <sp:adv>
           <op:pbTi>
-            <xsl:if test="./h:h6"><sp:title><xsl:value-of select="./h:h6"/></sp:title></xsl:if>
+            <xsl:if test="string-length(./h:h6/text()) > 0">
+              <sp:title>
+                <xsl:value-of select="./h:h6"/>
+              </sp:title>
+            </xsl:if>
           </op:pbTi>
           <op:res>
             <xsl:apply-templates select="./*"/>
@@ -374,7 +406,11 @@
       <xsl:otherwise>
         <sp:info>
           <op:pbTi>
-            <xsl:if test="./h:h6"><sp:title><xsl:value-of select="./h:h6"/></sp:title></xsl:if>
+            <xsl:if test="string-length(./h:h6/text()) > 0">
+              <sp:title>
+                <xsl:value-of select="./h:h6"/>
+              </sp:title>
+            </xsl:if>
           </op:pbTi>
           <op:res>
             <xsl:apply-templates select="./*"/>
