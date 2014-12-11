@@ -3,6 +3,9 @@
     xmlns:h="http://www.utc.fr/ics/hdoc/xhtml"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
     >
+
+    <property file="global.properties"/>
+    
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
     
     <!-- This template matches the root and create a ANT project, the root of any ANT buildfile. -->
@@ -27,16 +30,16 @@
 
     <!-- Targeted markups. -->
     <xsl:template match="h:img">
-        <copy tofile="decompressedOpale/{./@src}" file="decompressedHdoc/{./@src}"/>
+        <copy tofile="${{tmpdir}}/decompressedOpale/res/{./@src}" file="${{tmpdir}}/decompressedHdoc/{./@src}"/>
     </xsl:template>
     <xsl:template match="h:audio">
-        <copy tofile="decompressedOpale/{./@src}" file="decompressedHdoc/{./@src}"/>
+        <copy tofile="${{tmpdir}}/decompressedOpale/res/{./@src}" file="${{tmpdir}}/decompressedHdoc/{./@src}"/>
     </xsl:template>
     <xsl:template match="h:video">
-        <copy tofile="decompressedOpale/{./@src}" file="decompressedHdoc/{./@src}"/>
+        <copy tofile="${{tmpdir}}/decompressedOpale/res/{./@src}" file="${{tmpdir}}/decompressedHdoc/{./@src}"/>
     </xsl:template>
     <xsl:template match="h:object">
-        <copy tofile="decompressedOpale/{./@data}" file="decompressedHdoc/{./@data}"/>
+        <copy tofile="${{tmpdir}}/decompressedOpale/res/{./@data}" file="${{tmpdir}}/decompressedHdoc/{./@data}"/>
     </xsl:template>
     
     <!-- These markups are matched in order to minimize "apply-templates" side-effects (i.e. their contents are not relevant for this transformation). -->

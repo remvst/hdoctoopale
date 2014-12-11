@@ -526,22 +526,22 @@
   
     <!-- Ressource related templates -->
       <xsl:template match="h:img">
-        <sp:res sc:refUri="{./@src}">
+        <sp:res sc:refUri="res/{./@src}">
           <op:resInfoM/>
         </sp:res>
       </xsl:template>
       <xsl:template match="h:audio">
-        <sp:res sc:refUri="{./@src}">
+        <sp:res sc:refUri="res/{./@src}">
           <op:resInfoM/>
         </sp:res>
       </xsl:template>
       <xsl:template match="h:video">
-        <sp:res sc:refUri="{./@src}">
+        <sp:res sc:refUri="res/{./@src}">
           <op:resInfoM/>
         </sp:res>
       </xsl:template>
       <xsl:template match="h:object">
-    <sp:int sc:refUri="{./@data}">
+    <sp:int sc:refUri="res/{./@data}">
       <op:instructionM/>
     </sp:int>
   </xsl:template>

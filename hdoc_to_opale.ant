@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project name="hdoc_to_opale" basedir="." default="convert">
-	<!-- This properties are for debugging purposes only.
-	<property name="InputPath" value="sample02.hdoc"/>
-	<property name="OutputPath"	value="sample02.scar"/>
-	-->
+ 	<property file="global.properties"/>
 
 	<taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
 		<classpath>
@@ -15,85 +12,107 @@
 		<!-- This is the main target : it is called whether by the project (as the default target) or by the user/converter
 		website, if specified in the command line. Basically, this target consists in several targets/ant buildfiles calls. -->
 		<antcall target="CleanDirectory"/>
+		<mkdir dir="${tmpdir}"/>
 
 		<antcall target="UnzipHdocFile"/>
 		<antcall target="validateInput" />
 
 		<antcall target="FindContentFiles"/>
-		<ant antfile="generateContentPath.xml"/>
+		<ant antfile="${tmpdir}/generateContentPath.xml"/>
+
 		<antcall target="ZipScar"/>
 		<antcall target="validateOutput" />
+		<antcall target="subdivideOutput" />
 		<antcall target="CleanDirectory"/>
     </target>
 	
 	<target name="CleanDirectory">
-		<!-- First and last target, which erases every intermediate files/folders created during the conversion process.--> 
-		<delete dir="decompressedHdoc"/>
-		<delete dir="decompressedOpale"/>
-		<delete file="generateContentPath.xml"/>
-		<delete file="moveRessourceFiles.xml"/>
+		<delete dir="${tmpdir}"/>
 	</target>
 	
 	<target name="UnzipHdocFile">
 		<!-- Unzip the input hdoc file. Decompressed folder is named "decompressedHdoc" : this name is the only one which
 		refers to the hdoc file furthermore in this project. -->
-		<unzip src="${InputPath}" dest="decompressedHdoc"/>
-		<chmod dir="decompressedHdoc" perm="777"/>
+		<unzip src="${InputPath}" dest="${tmpdir}/decompressedHdoc"/>
+		<chmod dir="${tmpdir}/decompressedHdoc" perm="777"/>
 	</target>
 	
 	<target name="FindContentFiles">
 		<!-- Finds the absolute path of container.xml and applies transformation0.xsl on it.-->
 		<first id="first">
 		    <fileset
-		    	dir="decompressedHdoc/META-INF"
+		    	dir="${tmpdir}/decompressedHdoc/META-INF"
 		    	includes="**/container.xml"
 		    />
 		</first>
 		<xslt
 			in="${toString:first}"
-			out="generateContentPath.xml"
+			out="${tmpdir}/generateContentPath.xml"
 			style="transformation0.xsl"
 			processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
 		/>
-		<chmod file="generateContentPath.xml" perm="777"/>
+		<chmod file="${tmpdir}/generateContentPath.xml" perm="777"/>
 	</target>
 	
 	<target name="ZipScar">
 		<!-- The penultimate target, which zips the converted file into a new folder (decompressedOpale). -->
-		<mkdir dir="decompressedOpale"/>
-		<chmod dir="decompressedOpale" perm="777"/>
-		<copy file=".wspmeta" todir="decompressedOpale"/>
-		<move file="outputFile.xml" todir="decompressedOpale"/>
+		<mkdir dir="${tmpdir}/decompressedOpale"/>
+		<chmod dir="${tmpdir}/decompressedOpale" perm="777"/>
+		<copy file=".wspmeta" todir="${tmpdir}/decompressedOpale"/>
 		<!-- Here you can call whether the task "MoveRessourceFiles or the moveRessourceFiles.xml file. Don't call them both ! -->
 		<!-- The following line must contain <ant antfile="moveRessourceFiles.xml"/> OR <antcall target="MoveRessourceFiles"/> -->
-		<ant antfile="moveRessourceFiles.xml"/>
-		<zip basedir="decompressedOpale" destfile="${OutputPath}" encoding="UTF-8"/>
+		<ant antfile="${tmpdir}/moveRessourceFiles.xml"/>
+		<zip basedir="${tmpdir}/decompressedOpale" destfile="${OutputPath}" encoding="UTF-8"/>
 		<chmod dir="${OutputPath}" perm="777"/>
-	</target>
-	
-	<target name="MoveRessourceFiles">
-		<!-- Move ressource files : a subtarget of ZipScar. This target in no longer necessary (cf. ZipScar) but i chose to leave
-		anyway : it's a bit rougher than calling moveRessourceFiles.xml but it can still be useful if you encounter issues with
-		moveRessourceFiles.xml. -->
-		<move todir="decompressedOpale/">
-			<fileset dir="decompressedHdoc">
-				<exclude name="mimetype"/>
-				<exclude name="content.xml"/>
-			</fileset>
-			<dirset dir="decompressedHdoc">
-				<exclude name="META-INF"/>
-			</dirset>
-		</move>
 	</target>
 
 	<!-- Validating the XML container file -->
 	<target name="validateInput">	
-		<jing file="decompressedHdoc/META-INF/container.xml" rngfile="schema/hdoc1-container.rng"></jing>
+		<jing file="${tmpdir}/decompressedHdoc/META-INF/container.xml" rngfile="schema/hdoc1-container.rng"></jing>
 	</target>
 
 	<!-- Validating the XML output -->
 	<target name="validateOutput">	
 		<echo>Validating output...</echo>
-		<jing file="decompressedOpale/outputFile.xml" rngfile="schema/op_ue.rng"></jing>		
+		<jing file="${tmpdir}/decompressedOpale/main.xml" rngfile="schema/op_ue.rng"></jing>		
+	</target>
+
+	<target name="subdivideOutput">
+		<mkdir dir="${tmpdir}/decompressedOpaleDivided"/>
+
+		<!-- Adding IDS to the general output file -->
+		<xslt
+			in="${tmpdir}/decompressedOpale/main.xml"
+			out="${tmpdir}/outputWithCourseUcIds.xml"
+			style="addCourseUcIds.xsl"
+			processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
+		/>
+
+		<!-- Generating the root file (with refs to other files) -->
+		<xslt
+			in="${tmpdir}/outputWithCourseUcIds.xml"
+			out="${tmpdir}/decompressedOpaleDivided/output.xml"
+			style="addCourseUcReferences.xsl"
+			processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
+		/>
+
+		<!-- Generating the ANT file that will copy the files -->
+		<xslt
+			in="${tmpdir}/outputWithCourseUcIds.xml"
+			out="${tmpdir}/exportUnits.ant"
+			style="prepareCourseUcCopies.xsl"
+			processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
+		/>
+
+		<!-- Executing that ANT file -->
+		<ant antfile="${tmpdir}/exportUnits.ant"/>
+
+		<!-- Copying resources -->
+		<copy todir="${tmpdir}/decompressedOpaleDivided/res" >  
+	        <fileset dir="${tmpdir}/decompressedOpale/res" includes="**"/>  
+	 	</copy>
+
+	 	<!-- Now let's zip that -->
+		<zip basedir="${tmpdir}/decompressedOpaleDivided" destfile="${OutputPathDivided}" encoding="UTF-8"/>
 	</target>
 </project>
