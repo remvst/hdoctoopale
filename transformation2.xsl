@@ -91,15 +91,23 @@
 
   <!-- Body related templates. -->
     <xsl:template match="h:body">
-      <xsl:if test="./h:header/h:div[@data-hdoc-type = 'introduction']">
-        <xsl:apply-templates select="./h:header/h:div[@data-hdoc-type = 'introduction']" />
+      <xsl:if test="./h:section[@data-hdoc-type = 'introduction']">
+        <sp:intro>
+          <op:res>
+            <xsl:apply-templates select="./h:section[@data-hdoc-type = 'introduction']/h:div/*" />
+          </op:res>
+        </sp:intro>
       </xsl:if>
 
       <!-- Right now this template is not necessary, since sections are the only possible descendants of body. -->
       <xsl:apply-templates select="./h:section"/>
 
-      <xsl:if test="./h:footer/h:div[@data-hdoc-type = 'conclusion']">
-        <xsl:apply-templates select="./h:footer/h:div[@data-hdoc-type = 'conclusion']" />
+      <xsl:if test="./h:section[@data-hdoc-type = 'conclusion']">
+        <sp:conclu>
+          <op:res>
+            <xsl:apply-templates select="./h:section[@data-hdoc-type = 'conclusion']/h:div/*" />
+          </op:res>
+        </sp:conclu>
       </xsl:if>
     </xsl:template>
 
@@ -564,6 +572,62 @@
     <sp:int sc:refUri="{./@data}">
       <op:instructionM/>
     </sp:int>
+  </xsl:template>
+
+  <xsl:template match="h:section[h:div[@data-hdoc-type = 'question']]">
+    <!-- Selecting the first question -->
+    <sp:trainUcMcqMur>
+      <op:mcqMur>
+        <op:exeM>
+          <sp:title>
+            <xsl:value-of select="./h:header/h:h1"/>
+          </sp:title>
+        </op:exeM>
+
+        <xsl:apply-templates select="./h:div[@data-hdoc-type = 'question']" />
+
+        <sc:choices>
+          <xsl:apply-templates select="./h:div[@data-hdoc-type = 'choice-correct' or @data-hdoc-type = 'choice-incorrect']"/>
+        </sc:choices>
+
+        <sc:globalExplanation>
+          <op:res>
+            <xsl:apply-templates select="./h:div[@data-hdoc-type = 'explanation']/h:p"/>
+          </op:res>
+        </sc:globalExplanation>
+      </op:mcqMur>
+    </sp:trainUcMcqMur>
+  </xsl:template>
+
+  <xsl:template match="h:div[@data-hdoc-type = 'question']"> 
+    <sc:question>
+      <op:res>
+        <xsl:apply-templates select="./*" />
+      </op:res>
+    </sc:question>
+  </xsl:template>
+
+  <xsl:template match="h:div[@data-hdoc-type = 'choice-correct']"> 
+    <sc:choice solution="checked">
+      <xsl:call-template name="choice" />
+    </sc:choice>
+  </xsl:template>
+
+  <xsl:template match="h:div[@data-hdoc-type = 'choice-incorrect']"> 
+    <sc:choice solution="unchecked">
+      <xsl:call-template name="choice" />
+    </sc:choice>
+  </xsl:template>
+
+  <xsl:template name="choice">
+    <sc:choiceLabel>
+      <op:txt>
+        <!-- TODO formating won't work -->
+        <sc:para>
+          <xsl:apply-templates select="./h:p/text()" />
+        </sc:para>
+      </op:txt>
+    </sc:choiceLabel>
   </xsl:template>
   
   <!-- These markups are matched in order to minimize "apply-templates select="./*" side-effects (i.e. their content are already treated into another template or they are not (yet) supported). -->
