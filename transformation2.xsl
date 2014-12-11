@@ -132,7 +132,7 @@
     </xsl:template>
 
     <!-- Grains <sections>. A grain is either a unit-of-content, or does not contain sub divisions (<section>'s) -->
-    <xsl:template match="h:section[@data-hdoc-type='unit-of-content' or not(h:section)]">
+    <xsl:template match="h:section[@data-hdoc-type='unit-of-content' or h:div or not(h:section)]">
       <sp:courseUc>
         <op:expUc>
           <op:uM>
