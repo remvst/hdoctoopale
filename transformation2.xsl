@@ -99,8 +99,8 @@
         </sp:intro>
       </xsl:if>
 
-      <!-- Right now this template is not necessary, since sections are the only possible descendants of body. -->
-      <xsl:apply-templates select="./h:section"/>
+      <!-- Not selecting introductions or conclusions -->
+      <xsl:apply-templates select="./h:section[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]"/>
 
       <xsl:if test="./h:section[@data-hdoc-type = 'conclusion']">
         <sp:conclu>
