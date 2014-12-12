@@ -15,8 +15,8 @@
   </xsl:template>
 
   <xsl:template name="string-to-lowercase">
-    <xsl:param name="lcletters">abcdefghijklmnopqrstuvwxyz</xsl:param>
-    <xsl:param name="ucletters">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:param>
+    <xsl:param name="lcletters">abcdefghijklmnopqrstuvwxyzeeeeaaaa</xsl:param>
+    <xsl:param name="ucletters">ABCDEFGHIJKLMNOPQRSTUVWXYZéèêëàâàá</xsl:param>
     <xsl:param name="text"/>
     <xsl:value-of select="translate($text,$ucletters,$lcletters)"/>
   </xsl:template>
