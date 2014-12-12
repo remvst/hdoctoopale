@@ -23,12 +23,80 @@
 
   <xsl:template name="string-to-slug">
     <xsl:param name="text" select="''" />
-    <xsl:variable name="dodgyChars" select="' ,.#_-!?*:;=+'" />
-    <xsl:variable name="replacementChar" select="'------------'" />
-    <xsl:variable name="lowercased"><xsl:call-template name="string-to-lowercase"><xsl:with-param name="text" select="$text" /></xsl:call-template></xsl:variable>
+    <xsl:variable name="dodgyChars" select="' ,.#_-!?*:;=+'&#10;" />
+    <xsl:variable name="replacementChar" select="'-------------'" />
+
+    <xsl:variable name="oneline">
+      <xsl:value-of select="normalize-space(translate($text,'&#10;',''))"/>
+    </xsl:variable>
+
+    <xsl:variable name="lowercased"><xsl:call-template name="string-to-lowercase"><xsl:with-param name="text" select="$oneline" /></xsl:call-template></xsl:variable>
     <xsl:variable name="escaped"><xsl:value-of select="translate( $lowercased, $dodgyChars, $replacementChar )" /></xsl:variable>
-    <xsl:value-of select="$escaped" />
+
+    <xsl:variable name="cleaned">
+      <xsl:call-template name="string-replace-caller">
+        <xsl:with-param name="text" select="$escaped" />
+        <xsl:with-param name="replace" select="'---'" />
+        <xsl:with-param name="by" select="'-'" />
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:value-of select="$cleaned" />
   </xsl:template>
+
+  <xsl:template name="string-replace-all">
+   <xsl:param name="text"/>
+   <xsl:param name="replace"/>
+   <xsl:param name="by"/>
+   <xsl:choose>
+     <xsl:when test="contains($text,$replace)">
+       <xsl:value-of select="substring-before($text,$replace)"/>
+       <xsl:value-of select="$by"/>
+       <xsl:call-template name="string-replace-all">
+         <xsl:with-param name="text" select="substring-after($text,$replace)"/>
+         <xsl:with-param name="replace" select="$replace"/>
+         <xsl:with-param name="by" select="$by"/>
+       </xsl:call-template>
+     </xsl:when>
+     <xsl:otherwise>
+       <xsl:value-of select="$text"/>
+     </xsl:otherwise>
+   </xsl:choose>
+  </xsl:template> 
+
+  <xsl:template name="string-replace-caller">
+   <xsl:param name="text"/>
+   <xsl:param name="replace"/>
+   <xsl:param name="by"/>
+
+   <xsl:variable name="changed">
+     <xsl:choose>
+       <xsl:when test="contains($text,$replace)">
+         <xsl:call-template name="string-replace-all">
+           <xsl:with-param name="text" select="$text"/>
+           <xsl:with-param name="replace" select="$replace"/>
+           <xsl:with-param name="by" select="$by"/>
+         </xsl:call-template>
+       </xsl:when>
+       <xsl:otherwise>
+         <xsl:value-of select="$text"/>
+       </xsl:otherwise>
+     </xsl:choose>
+    </xsl:variable>
+
+    <xsl:choose>
+       <xsl:when test="contains($changed,$replace)">
+         <xsl:call-template name="string-replace-caller">
+           <xsl:with-param name="text" select="$changed"/>
+           <xsl:with-param name="replace" select="$replace"/>
+           <xsl:with-param name="by" select="$by"/>
+         </xsl:call-template>
+       </xsl:when>
+       <xsl:otherwise>
+         <xsl:value-of select="$changed"/>
+       </xsl:otherwise>
+     </xsl:choose>
+  </xsl:template> 
 
 
 
