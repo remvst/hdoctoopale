@@ -10,6 +10,12 @@
 
   <xsl:template match="sc:item">
     <project name="copy-ucs" default="main">
+      <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
+        <classpath>
+          <pathelement location="lib/jing.jar"/>
+        </classpath>
+      </taskdef>
+
       <property file="global.properties"/>
 
       <target name="main">
@@ -25,8 +31,11 @@
         style="copyCourseUc.xsl"
         processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
     >
+
       <param name="elementid" expression="{@data-export-id}"/>
     </xslt>
+
+    <jing file="${{tmpdir}}/decompressedOpaleDivided/{@data-export-file}" rngfile="schema/op_expUc.rng"></jing>
 
   </xsl:template>
 </xsl:stylesheet>
