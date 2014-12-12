@@ -20,9 +20,12 @@
 		<antcall target="FindContentFiles"/>
 		<ant antfile="${tmpdir}/generateContentPath.xml"/>
 
-		<antcall target="ZipScar"/>
-		<antcall target="validateOutput" />
-		<antcall target="subdivideOutput" />
+		<antcall target="ValidateOutput"/>
+		<antcall target="DivideOutput"/>
+
+		<antcall target="ZipOutput"/>
+		<antcall target="ZipDividedOutput"/>
+
 		<antcall target="CleanDirectory"/>
     </target>
 	
@@ -54,16 +57,18 @@
 		<chmod file="${tmpdir}/generateContentPath.xml" perm="777"/>
 	</target>
 	
-	<target name="ZipScar">
-		<!-- The penultimate target, which zips the converted file into a new folder (decompressedOpale). -->
-		<mkdir dir="${tmpdir}/decompressedOpale"/>
-		<chmod dir="${tmpdir}/decompressedOpale" perm="777"/>
+	<target name="ZipOutput">
 		<copy file=".wspmeta" todir="${tmpdir}/decompressedOpale"/>
-		<!-- Here you can call whether the task "MoveRessourceFiles or the moveRessourceFiles.xml file. Don't call them both ! -->
-		<!-- The following line must contain <ant antfile="moveRessourceFiles.xml"/> OR <antcall target="MoveRessourceFiles"/> -->
 		<ant antfile="${tmpdir}/moveRessourceFiles.xml"/>
 		<zip basedir="${tmpdir}/decompressedOpale" destfile="${OutputPath}" encoding="UTF-8"/>
-		<chmod dir="${OutputPath}" perm="777"/>
+	</target>
+
+	<target name="ZipDividedOutput">
+		<copy file=".wspmeta" todir="${tmpdir}/decompressedOpaleDivided"/>
+		<copy todir="${tmpdir}/decompressedOpaleDivided/res" >  
+	        <fileset dir="${tmpdir}/decompressedOpale/res" includes="**"/>  
+	 	</copy>
+		<zip basedir="${tmpdir}/decompressedOpaleDivided" destfile="${OutputPathDivided}" encoding="UTF-8"/>
 	</target>
 
 	<!-- Validating the XML container file -->
@@ -72,12 +77,11 @@
 	</target>
 
 	<!-- Validating the XML output -->
-	<target name="validateOutput">	
-		<echo>Validating output...</echo>
+	<target name="ValidateOutput">
 		<jing file="${tmpdir}/decompressedOpale/main.xml" rngfile="schema/op_ue.rng"></jing>		
 	</target>
 
-	<target name="subdivideOutput">
+	<target name="DivideOutput">
 		<mkdir dir="${tmpdir}/decompressedOpaleDivided"/>
 
 		<!-- Adding IDS to the general output file -->
@@ -91,7 +95,7 @@
 		<!-- Generating the root file (with refs to other files) -->
 		<xslt
 			in="${tmpdir}/outputWithCourseUcIds.xml"
-			out="${tmpdir}/decompressedOpaleDivided/output.xml"
+			out="${tmpdir}/decompressedOpaleDivided/main.xml"
 			style="addCourseUcReferences.xsl"
 			processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
 		/>
@@ -106,13 +110,5 @@
 
 		<!-- Executing that ANT file -->
 		<ant antfile="${tmpdir}/exportUnits.ant"/>
-
-		<!-- Copying resources -->
-		<copy todir="${tmpdir}/decompressedOpaleDivided/res" >  
-	        <fileset dir="${tmpdir}/decompressedOpale/res" includes="**"/>  
-	 	</copy>
-
-	 	<!-- Now let's zip that -->
-		<zip basedir="${tmpdir}/decompressedOpaleDivided" destfile="${OutputPathDivided}" encoding="UTF-8"/>
 	</target>
 </project>
