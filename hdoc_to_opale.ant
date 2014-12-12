@@ -26,7 +26,7 @@
 		<antcall target="ZipOutput"/>
 		<antcall target="ZipDividedOutput"/>
 
-		<!--<antcall target="CleanDirectory"/>-->
+		<antcall target="CleanDirectory"/>
     </target>
 	
 	<target name="CleanDirectory">
