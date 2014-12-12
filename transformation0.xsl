@@ -7,6 +7,8 @@
 	
     <xsl:template match="c:container">
         <project name="getContentFileAndTransformIt" basedir="." default="start">
+            <property file="global.properties"/>
+
             <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
                 <classpath>
                     <pathelement location="lib/jing.jar"/>
@@ -19,22 +21,22 @@
     
     <xsl:template match="c:rootfiles">
         <target name="start">
-            <jing file="decompressedHdoc/{c:rootfile/@full-path}" rngfile="schema/hdoc1-xhtml.rng"></jing>
+            <jing file="${{tmpdir}}/decompressedHdoc/{c:rootfile/@full-path}" rngfile="schema/hdoc1-xhtml.rng"></jing>
 
             <xslt
-                in="decompressedHdoc/{c:rootfile/@full-path}"
-                out="moveRessourceFiles.xml"
+                in="${{tmpdir}}/decompressedHdoc/{c:rootfile/@full-path}"
+                out="${{tmpdir}}/moveRessourceFiles.xml"
                 style="moveRessourceFiles.xsl"
                 processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
             />
-            <chmod file="moveRessourceFiles.xml" perm="777"/>
+            <chmod file="${{tmpdir}}/moveRessourceFiles.xml" perm="777"/>
             <xslt
-                in="decompressedHdoc/{c:rootfile/@full-path}"
-                out="outputFile.xml"
+                in="${{tmpdir}}/decompressedHdoc/{c:rootfile/@full-path}"
+                out="${{tmpdir}}/decompressedOpale/main.xml"
                 style="transformation2.xsl"
                 processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
             />
-            <chmod file="outputFile.xml" perm="777"/>
+            <chmod file="${{tmpdir}}/decompressedOpale/main.xml" perm="777"/>
         </target>
     </xsl:template>
 </xsl:stylesheet>
