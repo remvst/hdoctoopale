@@ -91,7 +91,7 @@
 
   <!-- Body related templates. -->
     <xsl:template match="h:body">
-      <xsl:if test="./h:section[@data-hdoc-type = 'introduction']">
+      <xsl:if test="./h:section[@data-hdoc-type = 'introduction']/h:div/*">
         <sp:intro>
           <op:res>
             <xsl:apply-templates select="./h:section[@data-hdoc-type = 'introduction']/h:div/*" />
@@ -99,10 +99,16 @@
         </sp:intro>
       </xsl:if>
 
+      <!-- In case an introduction contains subsections, we consider them as regular sections outside from it -->
+      <xsl:apply-templates select="./h:section[@data-hdoc-type = 'introduction']/h:section"/>
+
       <!-- Not selecting introductions or conclusions -->
       <xsl:apply-templates select="./h:section[not(@data-hdoc-type = 'introduction' or @data-hdoc-type = 'conclusion')]"/>
 
-      <xsl:if test="./h:section[@data-hdoc-type = 'conclusion']">
+      <!-- Same thing as for the introduction -->
+      <xsl:apply-templates select="./h:section[@data-hdoc-type = 'conclusion']/h:section"/>
+
+      <xsl:if test="./h:section[@data-hdoc-type = 'conclusion']/h:div/*">
         <sp:conclu>
           <op:res>
             <xsl:apply-templates select="./h:section[@data-hdoc-type = 'conclusion']/h:div/*" />
