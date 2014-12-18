@@ -55,6 +55,7 @@
                             <value>HdocConverter/OpenDocumentText</value>
                             <value>HdocConverter/LaTeX</value>
                             <value>HdocConverter/OPML</value>
+                            <value>HdocConverter/DITA</value>                            
                         </choice>
                     </attribute>
                 </element>
