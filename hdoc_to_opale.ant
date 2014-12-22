@@ -15,7 +15,7 @@
 		<mkdir dir="${tmpdir}"/>
 
 		<antcall target="UnzipHdocFile"/>
-		<antcall target="validateInput" />
+		<antcall target="ValidateInput" />
 
 		<antcall target="FindContentFiles"/>
 		<ant antfile="${tmpdir}/generateContentPath.xml"/>
@@ -73,7 +73,7 @@
 	</target>
 
 	<!-- Validating the XML container file -->
-	<target name="validateInput">	
+	<target name="ValidateInput">	
 		<jing file="${tmpdir}/decompressedHdoc/META-INF/container.xml" rngfile="schema/hdoc1-container.rng"></jing>
 	</target>
 
