@@ -472,6 +472,14 @@
           <xsl:value-of select="." />
         </sc:phrase>
       </xsl:template>
+
+      <!-- References -->
+      <xsl:template match="h:a[@data-hdoc-type = 'bibtexml']">
+        <sc:uLink role="bib" sc:refUri="refs-{substring-before(@href,'.')}/{substring-after(@href,'#')}.ref">
+          <xsl:apply-templates select="./* | ./text()"/>
+        </sc:uLink>
+      </xsl:template>
+
       <xsl:template match="h:li">
         <sc:listItem>
           <xsl:apply-templates select="./* | ./text()"/>

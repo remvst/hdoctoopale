@@ -37,6 +37,15 @@
                 processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
             />
             <chmod file="${{tmpdir}}/decompressedOpale/main.xml" perm="777"/>
+
+            <!-- Finding references and converting them -->
+            <xslt
+                in="${{tmpdir}}/decompressedHdoc/{c:rootfile/@full-path}"
+                out="${{tmpdir}}/convertReferences.xml"
+                style="prepareReferencesConversions.xsl"
+                processor="org.apache.tools.ant.taskdefs.optional.TraXLiaison"
+            />
+            <ant antfile="${{tmpdir}}/convertReferences.xml"/>
         </target>
     </xsl:template>
 </xsl:stylesheet>
