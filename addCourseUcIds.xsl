@@ -23,7 +23,7 @@
 
   <xsl:template name="string-to-slug">
     <xsl:param name="text" select="''" />
-    <xsl:variable name="dodgyChars" select="' ,.#_-!?*:;=+'&#10;" />
+    <xsl:variable name="dodgyChars" select="' ,.#_-!?*:;=+&#10;/'" />
     <xsl:variable name="replacementChar" select="'-------------'" />
 
     <xsl:variable name="oneline">
