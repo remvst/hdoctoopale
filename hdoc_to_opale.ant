@@ -69,6 +69,9 @@
 		<copy todir="${tmpdir}/decompressedOpaleDivided/res" >  
 	        <fileset dir="${tmpdir}/decompressedOpale/res" includes="**"/>  
 	 	</copy>
+		<copy todir="${tmpdir}/decompressedOpaleDivided/references" >  
+	        <fileset dir="${tmpdir}/decompressedOpale/references" includes="**"/>  
+	 	</copy>
 		<zip basedir="${tmpdir}/decompressedOpaleDivided" destfile="${OutputPathDivided}" encoding="UTF-8"/>
 	</target>
 

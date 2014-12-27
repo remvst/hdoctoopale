@@ -475,7 +475,7 @@
 
       <!-- References -->
       <xsl:template match="h:a[@data-hdoc-type = 'bibtexml']">
-        <sc:uLink role="bib" sc:refUri="refs-{substring-before(@href,'.')}/{substring-after(@href,'#')}.ref">
+        <sc:uLink role="bib" sc:refUri="references/{substring-before(@href,'.')}/{substring-after(@href,'#')}.ref">
           <xsl:apply-templates select="./* | ./text()"/>
         </sc:uLink>
       </xsl:template>

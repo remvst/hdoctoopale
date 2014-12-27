@@ -30,13 +30,13 @@
     </ant>
 
     <!-- Creating the directory to unzip to -->
-    <mkdir dir="${{tmpdir}}/decompressedOpale/refs-{substring-before(@href,'.')}"/>
+    <mkdir dir="${{tmpdir}}/decompressedOpale/references/{substring-before(@href,'.')}"/>
 
     <!-- Unzipping that .scar -->
     <unzip src="${{basedir}}/bibtex_to_opale/refs.scar" dest="${{tmpdir}}/decompressedOpale"/>
 
     <!-- Moving the files to the right place (because bibtex_to_opale creates a ref/folder) -->
-    <move file="${{tmpdir}}/decompressedOpale/ref" tofile="${{tmpdir}}/decompressedOpale/refs-{substring-before(@href,'.')}"/>
+    <move file="${{tmpdir}}/decompressedOpale/ref" tofile="${{tmpdir}}/decompressedOpale/references/{substring-before(@href,'.')}"/>
 
     <!-- Now, we only have to make sure that the references made within transformation2.xsl will point towards the right files that were created by bibtex_to_opale -->
   </xsl:template>
