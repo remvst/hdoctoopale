@@ -13,6 +13,8 @@
       <property file="global.properties"/>
 
       <target name="main">
+        <mkdir dir="${{tmpdir}}/decompressedOpale/references" />
+
         <xsl:apply-templates select=".//h:a[@data-hdoc-type = 'bibtexml']"/>
       </target>
     </project>
