@@ -3,14 +3,14 @@
     xmlns:h="http://www.utc.fr/ics/hdoc/xhtml"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
     >
-
-    <property file="global.properties"/>
     
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
     
     <!-- This template matches the root and create a ANT project, the root of any ANT buildfile. -->
     <xsl:template match="h:html">
         <project name="moveRessourceFiles" basedir="." default="moveRessourceFiles">
+            <property file="global.properties"/>
+
             <target name="moveRessourceFiles">
                 <xsl:apply-templates select="./*"/>
             </target>
